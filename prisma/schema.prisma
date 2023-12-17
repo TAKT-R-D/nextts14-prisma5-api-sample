@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement()) @map("userId")
+  userName  String   @unique
+  imageUrl  String?  @db.VarChar(256)
+  posts     Post[]
+  bookmarks Bookmark[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map(name: "users")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement()) @map("postId")
+  title     String
+  content   String
+  authorId  Int
+  // if author is deleted, post record will be also deleted
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  bookmarks Bookmark[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map(name: "posts")
+}
+
+model Bookmark {
+  id Int      @id @default(autoincrement()) @map("bookmarkId")
+  postId Int?
+  //if post is deleted, bookmark record will NOT be also deleted
+  post    Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
+  userId Int
+  //if user is deleted, bookmark record will be deleted
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map(name: "bookmarks")
+}
