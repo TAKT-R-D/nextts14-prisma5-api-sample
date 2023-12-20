@@ -1,6 +1,18 @@
-import { prisma } from '@/lib/Prisma';
 import { NextResponse } from 'next/server';
-import type { UserType, ErrorType } from '@/types';
+import { prisma } from '@/lib/Prisma';
+import { handlePrismaError } from '@/lib/PrismaErrorHandler';
+import { handleZodError } from '@/lib/ZodErrorHandler';
+import {
+  UserFindUniqueArgsSchema as FindUniqueArgsSchema,
+  UserUpdateInputSchema as UpdateInputSchema,
+  UserWhereUniqueInputSchema as WhereUniqueInputSchema,
+  type User as RequestType,
+} from '@/schemas/zod';
+import {
+  UserInclude as PrismaInclude,
+  UserSelect as PrismaSelect,
+} from '@/schemas/prismaQuery';
+import { getPrismaFindUniqueQuery } from '@/lib/BuildPrismaQuery';
 
 type Props = {
   params: {
@@ -8,70 +20,116 @@ type Props = {
   };
 };
 
+function _validateSlugParameters(id: number) {
+  const result = WhereUniqueInputSchema.safeParse({ id });
+  let data: any = { success: result.success };
+  if (result.success === false) {
+    const { errorCode, errorObject } = handleZodError(result.error);
+    return { ...data, errors: errorObject, where: undefined };
+  } else {
+    return { ...data, errors: undefined, where: result.data };
+  }
+}
+
 export async function GET(request: Request, { params: { id } }: Props) {
+  let findQuery = await getPrismaFindUniqueQuery(PrismaSelect, PrismaInclude);
+  const { success, errors, where } = _validateSlugParameters(+id);
+  if (success === false) {
+    return NextResponse.json({ errors }, { status: 400 });
+  } else {
+    findQuery = { ...findQuery, where };
+  }
+
+  // validate query
+  const query = FindUniqueArgsSchema.safeParse(findQuery);
+  if (query.success === false) {
+    const { errorCode, errorObject } = handleZodError(query.error);
+    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+  }
+
   let statusCode = 200;
   const res = await prisma.user
-    .findUnique({
-      where: {
-        id: +id,
-      },
-      include: {
-        posts: {
-          orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
-          select: {
-            id: true,
-            title: true,
-            createdAt: true,
-          },
-        },
-        bookmarks: {
-          select: { postId: true },
-        },
-        _count: {
-          select: {
-            posts: true,
-            bookmarks: true,
-          },
-        },
-      },
+    .findUnique(query.data)
+    .then((res) => {
+      if (!res) {
+        statusCode = 404;
+        return { errors: { message: 'Not Found' } };
+      }
+      return res;
     })
     .catch((err) => {
-      console.error(err);
-      // TODO: Prisma Error handling
-      statusCode = err.status | 500;
-      return { error: 'Failed to fetch' };
+      const { errorCode, errorObject } = handlePrismaError(err);
+      statusCode = errorCode;
+      return errorObject;
     });
 
   return NextResponse.json(res, { status: statusCode });
 }
 
 export async function PUT(request: Request, { params: { id } }: Props) {
-  const { userName, imageUrl }: Partial<UserType> = await request.json();
-  let statusCode = 200;
+  const { success, errors, where } = _validateSlugParameters(+id);
+  if (success === false) {
+    return NextResponse.json({ errors }, { status: 400 });
+  }
 
-  if (!userName && !imageUrl) {
+  const requestBody: Partial<RequestType> = await request.json().catch(() => {
+    return null;
+  });
+
+  if (!requestBody) {
     return NextResponse.json(
-      { message: 'Missing required data' },
+      { errors: { message: 'empty request' } },
       { status: 400 }
     );
   }
 
-  let data = {};
-  if (userName) data = { ...data, userName };
-  if (imageUrl) data = { ...data, imageUrl };
+  const query = UpdateInputSchema.safeParse(requestBody);
+
+  if (query.success === false) {
+    const { errorCode, errorObject } = handleZodError(query.error);
+    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+  }
+
+  let statusCode = 200;
 
   const res = await prisma.user
     .update({
-      where: {
-        id: +id,
-      },
-      data,
+      where,
+      data: query.data,
     })
     .catch((err) => {
-      console.error(err);
-      statusCode = err.status | 500;
-      return { error: 'Failed to fetch' };
+      const { errorCode, errorObject } = handlePrismaError(err);
+      statusCode = errorCode;
+      return errorObject;
     });
 
   return NextResponse.json(res, { status: statusCode });
+}
+
+export async function DELETE(request: Request, { params: { id } }: Props) {
+  const { success, errors, where } = _validateSlugParameters(+id);
+  if (success === false) {
+    return NextResponse.json({ errors }, { status: 400 });
+  }
+
+  let statusCode = 204;
+
+  const res = await prisma.user
+    .delete({
+      where,
+    })
+    .then(() => {
+      return null;
+    })
+    .catch((err) => {
+      const { errorCode, errorObject } = handlePrismaError(err);
+      statusCode = errorCode;
+      return errorObject;
+    });
+
+  if (statusCode === 204) {
+    return new Response(null, { status: 204 });
+  } else {
+    return NextResponse.json(res, { status: statusCode });
+  }
 }

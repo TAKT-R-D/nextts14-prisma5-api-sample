@@ -1,41 +1,39 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { prisma } from '@/lib/Prisma';
-import type { UserType, ErrorType } from '@/types';
+import { getPrismaFindManyQuery } from '@/lib/BuildPrismaQuery';
+import { handlePrismaError } from '@/lib/PrismaErrorHandler';
+import { handleZodError } from '@/lib/ZodErrorHandler';
+import {
+  UserCreateInputSchema as CreateInputSchema,
+  UserFindManyArgsSchema as FindManyArgsSchema,
+  type User as RequestType,
+} from '@/schemas/zod';
+import {
+  UserInclude as PrismaInclude,
+  UserSelect as PrismaSelect,
+} from '@/schemas/prismaQuery';
 
-export async function GET(request: Request) {
-  // TODO: query parameter の取得と、validation
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const findQuery = await getPrismaFindManyQuery(
+    PrismaSelect,
+    PrismaInclude,
+    searchParams
+  );
+
+  // validate query
+  const query = FindManyArgsSchema.safeParse(findQuery);
+  if (query.success === false) {
+    const { errorCode, errorObject } = handleZodError(query.error);
+    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+  }
 
   let statusCode = 200;
-  // TODO: type の指定
-  // TODO: Prisma Query の build
-  const res = await prisma.user
-    .findMany({
-      include: {
-        posts: {
-          orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
-          select: {
-            id: true,
-            title: true,
-            createdAt: true,
-          },
-        },
-        bookmarks: {
-          select: { postId: true },
-        },
-        _count: {
-          select: {
-            posts: true,
-            bookmarks: true,
-          },
-        },
-      },
-    })
-    .catch((err) => {
-      console.error(err);
-      // TODO: Prisma Error handling
-      statusCode = err.status | 500;
-      return { error: 'Failed to fetch' };
-    });
+  const res = await prisma.user.findMany(query.data).catch((err) => {
+    const { errorCode, errorObject } = handlePrismaError(err);
+    statusCode = errorCode;
+    return errorObject;
+  });
   const totalCount = await prisma.user.aggregate({ _count: true });
 
   return NextResponse.json(res, {
@@ -47,61 +45,35 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { userName, imageUrl }: Partial<UserType> = await request.json();
+  const requestBody: Partial<RequestType> = await request.json().catch(() => {
+    return null;
+  });
 
-  if (!userName)
+  if (!requestBody) {
     return NextResponse.json(
-      { message: 'Missing required data' },
+      { errors: { message: 'empty request' } },
       { status: 400 }
     );
+  }
+
+  const query = CreateInputSchema.safeParse(requestBody);
+
+  if (query.success === false) {
+    const { errorCode, errorObject } = handleZodError(query.error);
+    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+  }
+
   let statusCode = 200;
 
   const res = await prisma.user
     .create({
-      data: {
-        userName,
-        imageUrl: imageUrl || null,
-      },
+      data: query.data,
     })
     .catch((err) => {
-      console.error(err);
-      // TODO: Prisma Error handling
-      statusCode = err.status | 500;
-      return { error: 'Failed to fetch' };
+      const { errorCode, errorObject } = handlePrismaError(err);
+      statusCode = errorCode;
+      return errorObject;
     });
 
   return NextResponse.json(res, { status: statusCode });
-}
-
-export async function DELETE(request: Request) {
-  const { id }: Partial<UserType> = await request.json();
-
-  if (!id)
-    return NextResponse.json(
-      { message: 'Missing required data' },
-      { status: 400 }
-    );
-  let statusCode = 204;
-
-  const res = await prisma.user
-    .delete({
-      where: {
-        id,
-      },
-    })
-    .then(() => {
-      return null;
-    })
-    .catch((err) => {
-      console.error(err);
-      // TODO: Prisma Error handling
-      statusCode = err.status | 500;
-      return { error: 'Failed to fetch' };
-    });
-
-  if (statusCode === 204) {
-    return new Response(null, { status: 204 });
-  } else {
-    return NextResponse.json(res, { status: statusCode });
-  }
 }
