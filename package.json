@@ -28,6 +28,8 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "prisma": "^5.7.0",
+    "prisma-dbml-generator": "^0.10.0",
+    "prisma-erd-generator": "^1.11.2",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }

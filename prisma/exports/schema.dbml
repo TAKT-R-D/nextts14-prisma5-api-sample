@@ -1,0 +1,38 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Project "Sample Project" {
+  database_type: 'PostgreSQL'
+  Note: ''
+}
+
+Table users {
+  id Int [pk, increment]
+  userName String [unique, not null]
+  imageUrl String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table posts {
+  id Int [pk, increment]
+  title String [not null]
+  content String [not null]
+  authorId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table bookmarks {
+  id Int [pk, increment]
+  postId Int
+  userId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Ref: posts.authorId > users.id [delete: Cascade]
+
+Ref: bookmarks.postId > posts.id [delete: Set Null]
+
+Ref: bookmarks.userId > users.id [delete: Cascade]
