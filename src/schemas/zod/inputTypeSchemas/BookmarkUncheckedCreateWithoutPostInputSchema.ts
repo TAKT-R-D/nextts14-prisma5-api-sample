@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const BookmarkUncheckedCreateWithoutPostInputSchema: z.ZodType<Prisma.BookmarkUncheckedCreateWithoutPostInput> = z.object({
   id: z.number().int().optional(),
-  userId: z.number().int(),
+  userId: z.string(),
   createdAt: z.coerce.date().optional()
 }).strict() as z.ZodType<Prisma.BookmarkUncheckedCreateWithoutPostInput>;
 

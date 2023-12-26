@@ -7,7 +7,7 @@ import { z } from 'zod';
 export const BookmarkSchema = z.object({
   id: z.number().int(),
   postId: z.number().int().nullable(),
-  userId: z.number().int(),
+  userId: z.string(),
   createdAt: z.coerce.date(),
 })
 

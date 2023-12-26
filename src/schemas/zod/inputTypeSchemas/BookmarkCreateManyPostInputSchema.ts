@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const BookmarkCreateManyPostInputSchema: z.ZodType<Prisma.BookmarkCreateManyPostInput> = z.object({
   id: z.number().int().optional(),
-  userId: z.number().int(),
+  userId: z.string(),
   createdAt: z.coerce.date().optional()
 }).strict() as z.ZodType<Prisma.BookmarkCreateManyPostInput>;
 

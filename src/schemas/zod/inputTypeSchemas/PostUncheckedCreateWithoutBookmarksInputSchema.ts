@@ -6,7 +6,7 @@ export const PostUncheckedCreateWithoutBookmarksInputSchema: z.ZodType<Prisma.Po
   id: z.number().int().optional(),
   title: z.string(),
   content: z.string(),
-  authorId: z.number().int(),
+  authorId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict() as z.ZodType<Prisma.PostUncheckedCreateWithoutBookmarksInput>;

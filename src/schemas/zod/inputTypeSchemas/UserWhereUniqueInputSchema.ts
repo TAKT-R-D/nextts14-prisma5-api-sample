@@ -9,18 +9,18 @@ import { BookmarkListRelationFilterSchema } from './BookmarkListRelationFilterSc
 
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> = z.union([
   z.object({
-    id: z.number().int(),
+    id: z.string().cuid(),
     userName: z.string()
   }),
   z.object({
-    id: z.number().int(),
+    id: z.string().cuid(),
   }),
   z.object({
     userName: z.string(),
   }),
 ])
 .and(z.object({
-  id: z.number().int().optional(),
+  id: z.string().cuid().optional(),
   userName: z.string().optional(),
   AND: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => UserWhereInputSchema).array().optional(),

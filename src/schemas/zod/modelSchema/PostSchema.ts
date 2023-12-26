@@ -8,7 +8,7 @@ export const PostSchema = z.object({
   id: z.number().int(),
   title: z.string(),
   content: z.string(),
-  authorId: z.number().int(),
+  authorId: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })

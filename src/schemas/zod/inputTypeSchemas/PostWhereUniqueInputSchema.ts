@@ -3,7 +3,6 @@ import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { PostWhereInputSchema } from './PostWhereInputSchema';
 import { StringFilterSchema } from './StringFilterSchema';
-import { IntFilterSchema } from './IntFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { UserRelationFilterSchema } from './UserRelationFilterSchema';
 import { UserWhereInputSchema } from './UserWhereInputSchema';
@@ -19,7 +18,7 @@ export const PostWhereUniqueInputSchema: z.ZodType<Prisma.PostWhereUniqueInput> 
   NOT: z.union([ z.lazy(() => PostWhereInputSchema),z.lazy(() => PostWhereInputSchema).array() ]).optional(),
   title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   content: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  authorId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
+  authorId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   author: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),

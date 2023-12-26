@@ -1,16 +1,20 @@
 import { ZodError } from 'zod';
+import { ERROR_MAP } from './ErrorMessages';
+import { type ErrorType } from '@/types';
 
-export function handleZodError(err: ZodError) {
+export function handleZodError(err: ZodError): {
+  errorCode: number;
+  errorObject: ErrorType;
+} {
   console.error(err);
-  return { errorCode: 400, errorObject: err.errors };
-  /*
-  const errors = err.errors.map((error) => {
+  const errors = err.errors.map((item) => {
     return {
-      code: error.code,
-      message: error.message,
-      path: error.path,
+      path: item.path.join(' / '),
+      message: item.message,
     };
   });
-  return errors;
-  */
+
+  const errorObject: ErrorType = { ...ERROR_MAP[400], errors };
+
+  return { errorCode: 400, errorObject };
 }

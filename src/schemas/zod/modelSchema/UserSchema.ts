@@ -5,7 +5,7 @@ import { z } from 'zod';
 /////////////////////////////////////////
 
 export const UserSchema = z.object({
-  id: z.number().int(),
+  id: z.string().cuid(),
   userName: z.string(),
   imageUrl: z.string().nullable(),
   createdAt: z.coerce.date(),

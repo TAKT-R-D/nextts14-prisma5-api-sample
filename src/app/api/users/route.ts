@@ -3,15 +3,16 @@ import { prisma } from '@/lib/Prisma';
 import { getPrismaFindManyQuery } from '@/lib/BuildPrismaQuery';
 import { handlePrismaError } from '@/lib/PrismaErrorHandler';
 import { handleZodError } from '@/lib/ZodErrorHandler';
+import { ERROR_MAP } from '@/lib/ErrorMessages';
 import {
   UserCreateInputSchema as CreateInputSchema,
   UserFindManyArgsSchema as FindManyArgsSchema,
   type User as RequestType,
 } from '@/schemas/zod';
 import {
-  UserInclude as PrismaInclude,
-  UserSelect as PrismaSelect,
-} from '@/schemas/prismaQuery';
+  UserPrismaInclude as PrismaInclude,
+  UserPrismaSelect as PrismaSelect,
+} from '@/schemas/config';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -25,15 +26,25 @@ export async function GET(request: NextRequest) {
   const query = FindManyArgsSchema.safeParse(findQuery);
   if (query.success === false) {
     const { errorCode, errorObject } = handleZodError(query.error);
-    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+    return NextResponse.json({ error: errorObject }, { status: errorCode });
   }
 
   let statusCode = 200;
-  const res = await prisma.user.findMany(query.data).catch((err) => {
-    const { errorCode, errorObject } = handlePrismaError(err);
-    statusCode = errorCode;
-    return errorObject;
-  });
+  const res = await prisma.user
+    .findMany(query.data)
+    .then((res) => {
+      if (!res) {
+        statusCode = 404;
+        return { error: ERROR_MAP[404] };
+      } else {
+        return res;
+      }
+    })
+    .catch((err) => {
+      const { errorCode, errorObject } = handlePrismaError(err);
+      statusCode = errorCode;
+      return { error: errorObject };
+    });
   const totalCount = await prisma.user.aggregate({ _count: true });
 
   return NextResponse.json(res, {
@@ -45,22 +56,15 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  const requestBody: Partial<RequestType> = await request.json().catch(() => {
-    return null;
-  });
-
-  if (!requestBody) {
-    return NextResponse.json(
-      { errors: { message: 'empty request' } },
-      { status: 400 }
-    );
-  }
+  const requestBody: Partial<RequestType> = await request
+    .json()
+    .catch(() => {});
 
   const query = CreateInputSchema.safeParse(requestBody);
 
   if (query.success === false) {
     const { errorCode, errorObject } = handleZodError(query.error);
-    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+    return NextResponse.json({ error: errorObject }, { status: errorCode });
   }
 
   let statusCode = 200;
@@ -72,7 +76,7 @@ export async function POST(request: Request) {
     .catch((err) => {
       const { errorCode, errorObject } = handlePrismaError(err);
       statusCode = errorCode;
-      return errorObject;
+      return { error: errorObject };
     });
 
   return NextResponse.json(res, { status: statusCode });

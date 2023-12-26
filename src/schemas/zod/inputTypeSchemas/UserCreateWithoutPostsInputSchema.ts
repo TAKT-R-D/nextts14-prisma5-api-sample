@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { BookmarkCreateNestedManyWithoutUserInputSchema } from './BookmarkCreateNestedManyWithoutUserInputSchema';
 
 export const UserCreateWithoutPostsInputSchema: z.ZodType<Prisma.UserCreateWithoutPostsInput> = z.object({
+  id: z.string().cuid().optional(),
   userName: z.string(),
   imageUrl: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),

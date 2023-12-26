@@ -7,7 +7,7 @@ export const PostUncheckedCreateInputSchema: z.ZodType<Prisma.PostUncheckedCreat
   id: z.number().int().optional(),
   title: z.string(),
   content: z.string(),
-  authorId: z.number().int(),
+  authorId: z.string(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   bookmarks: z.lazy(() => BookmarkUncheckedCreateNestedManyWithoutPostInputSchema).optional()

@@ -8,7 +8,7 @@ Project "Sample Project" {
 }
 
 Table users {
-  id Int [pk, increment]
+  id String [pk]
   userName String [unique, not null]
   imageUrl String
   createdAt DateTime [default: `now()`, not null]
@@ -19,7 +19,7 @@ Table posts {
   id Int [pk, increment]
   title String [not null]
   content String [not null]
-  authorId Int [not null]
+  authorId String [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 }
@@ -27,7 +27,7 @@ Table posts {
 Table bookmarks {
   id Int [pk, increment]
   postId Int
-  userId Int [not null]
+  userId String [not null]
   createdAt DateTime [default: `now()`, not null]
 }
 

@@ -9,10 +9,11 @@ import {
   type User as RequestType,
 } from '@/schemas/zod';
 import {
-  UserInclude as PrismaInclude,
-  UserSelect as PrismaSelect,
-} from '@/schemas/prismaQuery';
+  UserPrismaInclude as PrismaInclude,
+  UserPrismaSelect as PrismaSelect,
+} from '@/schemas/config';
 import { getPrismaFindUniqueQuery } from '@/lib/BuildPrismaQuery';
+import { ERROR_MAP } from '@/lib/ErrorMessages';
 
 type Props = {
   params: {
@@ -20,22 +21,22 @@ type Props = {
   };
 };
 
-function _validateSlugParameters(id: number) {
+function _validateSlugParameters(id: string) {
   const result = WhereUniqueInputSchema.safeParse({ id });
   let data: any = { success: result.success };
   if (result.success === false) {
     const { errorCode, errorObject } = handleZodError(result.error);
-    return { ...data, errors: errorObject, where: undefined };
+    return { ...data, error: errorObject, where: undefined };
   } else {
-    return { ...data, errors: undefined, where: result.data };
+    return { ...data, error: undefined, where: result.data };
   }
 }
 
 export async function GET(request: Request, { params: { id } }: Props) {
   let findQuery = await getPrismaFindUniqueQuery(PrismaSelect, PrismaInclude);
-  const { success, errors, where } = _validateSlugParameters(+id);
+  const { success, error, where } = _validateSlugParameters(id);
   if (success === false) {
-    return NextResponse.json({ errors }, { status: 400 });
+    return NextResponse.json({ error }, { status: 400 });
   } else {
     findQuery = { ...findQuery, where };
   }
@@ -44,7 +45,10 @@ export async function GET(request: Request, { params: { id } }: Props) {
   const query = FindUniqueArgsSchema.safeParse(findQuery);
   if (query.success === false) {
     const { errorCode, errorObject } = handleZodError(query.error);
-    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+    return NextResponse.json(
+      { ...ERROR_MAP[errorCode], errors: errorObject },
+      { status: errorCode }
+    );
   }
 
   let statusCode = 200;
@@ -53,41 +57,35 @@ export async function GET(request: Request, { params: { id } }: Props) {
     .then((res) => {
       if (!res) {
         statusCode = 404;
-        return { errors: { message: 'Not Found' } };
+        return { error: ERROR_MAP[404] };
+      } else {
+        return res;
       }
-      return res;
     })
     .catch((err) => {
       const { errorCode, errorObject } = handlePrismaError(err);
       statusCode = errorCode;
-      return errorObject;
+      return { error: errorObject };
     });
 
   return NextResponse.json(res, { status: statusCode });
 }
 
 export async function PUT(request: Request, { params: { id } }: Props) {
-  const { success, errors, where } = _validateSlugParameters(+id);
+  const { success, error, where } = _validateSlugParameters(id);
   if (success === false) {
-    return NextResponse.json({ errors }, { status: 400 });
+    return NextResponse.json({ error }, { status: 400 });
   }
 
-  const requestBody: Partial<RequestType> = await request.json().catch(() => {
-    return null;
-  });
-
-  if (!requestBody) {
-    return NextResponse.json(
-      { errors: { message: 'empty request' } },
-      { status: 400 }
-    );
-  }
+  const requestBody: Partial<RequestType> = await request
+    .json()
+    .catch(() => {});
 
   const query = UpdateInputSchema.safeParse(requestBody);
 
   if (query.success === false) {
     const { errorCode, errorObject } = handleZodError(query.error);
-    return NextResponse.json({ errors: errorObject }, { status: errorCode });
+    return NextResponse.json({ error: errorObject }, { status: errorCode });
   }
 
   let statusCode = 200;
@@ -100,16 +98,16 @@ export async function PUT(request: Request, { params: { id } }: Props) {
     .catch((err) => {
       const { errorCode, errorObject } = handlePrismaError(err);
       statusCode = errorCode;
-      return errorObject;
+      return { error: errorObject };
     });
 
   return NextResponse.json(res, { status: statusCode });
 }
 
 export async function DELETE(request: Request, { params: { id } }: Props) {
-  const { success, errors, where } = _validateSlugParameters(+id);
+  const { success, error, where } = _validateSlugParameters(id);
   if (success === false) {
-    return NextResponse.json({ errors }, { status: 400 });
+    return NextResponse.json({ error }, { status: 400 });
   }
 
   let statusCode = 204;
@@ -124,7 +122,7 @@ export async function DELETE(request: Request, { params: { id } }: Props) {
     .catch((err) => {
       const { errorCode, errorObject } = handlePrismaError(err);
       statusCode = errorCode;
-      return errorObject;
+      return { error: errorObject };
     });
 
   if (statusCode === 204) {

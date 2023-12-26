@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { BookmarkWhereInputSchema } from './BookmarkWhereInputSchema';
 import { IntNullableFilterSchema } from './IntNullableFilterSchema';
-import { IntFilterSchema } from './IntFilterSchema';
+import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { PostNullableRelationFilterSchema } from './PostNullableRelationFilterSchema';
 import { PostWhereInputSchema } from './PostWhereInputSchema';
@@ -19,7 +19,7 @@ export const BookmarkWhereUniqueInputSchema: z.ZodType<Prisma.BookmarkWhereUniqu
   OR: z.lazy(() => BookmarkWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => BookmarkWhereInputSchema),z.lazy(() => BookmarkWhereInputSchema).array() ]).optional(),
   postId: z.union([ z.lazy(() => IntNullableFilterSchema),z.number().int() ]).optional().nullable(),
-  userId: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
+  userId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   post: z.union([ z.lazy(() => PostNullableRelationFilterSchema),z.lazy(() => PostWhereInputSchema) ]).optional().nullable(),
   user: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),

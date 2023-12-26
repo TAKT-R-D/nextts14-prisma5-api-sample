@@ -5,7 +5,7 @@ import { PostUncheckedCreateNestedManyWithoutAuthorInputSchema } from './PostUnc
 import { BookmarkUncheckedCreateNestedManyWithoutUserInputSchema } from './BookmarkUncheckedCreateNestedManyWithoutUserInputSchema';
 
 export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreateInput> = z.object({
-  id: z.number().int().optional(),
+  id: z.string().cuid().optional(),
   userName: z.string(),
   imageUrl: z.string().optional().nullable(),
   createdAt: z.coerce.date().optional(),

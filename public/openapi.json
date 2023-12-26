@@ -1,0 +1,1874 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API sample",
+    "version": "1.0.0",
+    "description": "This is a sample API.",
+    "contact": {
+      "email": "admin@example.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://example.com/license"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "develop"
+    },
+    {
+      "url": "https://example.com/api",
+      "description": "production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authorization API"
+    },
+    {
+      "name": "user",
+      "description": "User API"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "headers": {
+      "x-total-count": {
+        "example": 123,
+        "type": "integer",
+        "description": "Total number of items in the collection."
+      }
+    },
+    "schemas": {},
+    "parameters": {}
+  },
+  "paths": {
+    "/auth/access_token": {
+      "post": {
+        "summary": "issue access_token",
+        "description": "issue access_token by userId and api secret",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "unique user id",
+                    "example": "clqj40goe0000z21ibpk26izw"
+                  },
+                  "secret": {
+                    "type": "string",
+                    "description": "api secret",
+                    "example": "YOUR_SECRET"
+                  }
+                },
+                "required": [
+                  "userId",
+                  "secret"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "access_token",
+                      "example": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJOYW1lIjoiYWRtaW4iLCJpbWFnZVVybCI6Ii90YWt0LnBuZyIsImlhdCI6MTcwMzA0MDUzMCwiaXNzIjoidXJuOmV4YW1wbGU6aXNzdWVyIiwiYXVkIjoidXJuOmV4YW1wbGU6YXVkaWVuY2UiLCJleHAiOjE3MDMwNzY1MzB9.UGcaC4PI-_2hFTThL3WhgTrMZbnulivAoyVjh14hq-d"
+                    }
+                  },
+                  "required": [
+                    "access_token"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "health check",
+        "description": "health check",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/health+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "pass"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success to connect"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/health+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "failed to connect"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string",
+                              "example": "error message"
+                            },
+                            "errors": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "path": {
+                                    "type": "string",
+                                    "example": "error path"
+                                  },
+                                  "message": {
+                                    "type": "string",
+                                    "example": "error message"
+                                  }
+                                },
+                                "required": [
+                                  "path",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "message"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message",
+                    "details"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/deep": {
+      "get": {
+        "summary": "health check with database connection",
+        "description": "health check with database connection",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/health+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "pass"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "success to connect"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/health+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "failed to connect"
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string",
+                              "example": "error message"
+                            },
+                            "errors": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "path": {
+                                    "type": "string",
+                                    "example": "error path"
+                                  },
+                                  "message": {
+                                    "type": "string",
+                                    "example": "error message"
+                                  }
+                                },
+                                "required": [
+                                  "path",
+                                  "message"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "message"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "message",
+                    "details"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "create an user",
+        "description": "create an user",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string",
+                    "description": "unique user name",
+                    "example": "John Doe"
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "user image",
+                    "example": "/images/image.png"
+                  }
+                },
+                "required": [
+                  "userName",
+                  "imageUrl"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "user id",
+                      "example": "clqj40goe0000z21ibpk26izw"
+                    },
+                    "userName": {
+                      "type": "string",
+                      "description": "unique user name",
+                      "example": "John Doe"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "user image",
+                      "example": "/images/image.png"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "created date",
+                      "example": "2021-11-23T07:00:00Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "updated date",
+                      "example": "2021-11-23T07:00:00Z"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "userName",
+                    "imageUrl",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "get users",
+        "description": "get users",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "description": "page number",
+              "example": 1
+            },
+            "required": false,
+            "description": "page number",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "description": "limit to take"
+            },
+            "required": false,
+            "description": "limit to take",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "join key:direction with comma",
+              "example": "id:desc,updatedAt:asc"
+            },
+            "required": false,
+            "description": "join key:direction with comma",
+            "name": "orderby",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "headers": {
+              "x-total-count": {
+                "$ref": "#/components/headers/x-total-count"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "user id",
+                            "example": "clqj40goe0000z21ibpk26izw"
+                          },
+                          "userName": {
+                            "type": "string",
+                            "description": "unique user name",
+                            "example": "John Doe"
+                          },
+                          "imageUrl": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "user image",
+                            "example": "/images/image.png"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "created date",
+                            "example": "2021-11-23T07:00:00Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "updated date",
+                            "example": "2021-11-23T07:00:00Z"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userName",
+                          "imageUrl",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "posts": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "description": "post id",
+                                  "example": 1
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "description": "post title",
+                                  "example": "YLorem ipsum dolor sit amet"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "description": "created date",
+                                  "example": "2021-11-23T07:00:00Z"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "createdAt"
+                              ]
+                            }
+                          },
+                          "bookmarks": {
+                            "type": "array",
+                            "items": {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "postId": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "post id",
+                                      "example": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "postId"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "post": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "integer",
+                                          "description": "post id",
+                                          "example": 1
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "description": "post title",
+                                          "example": "YLorem ipsum dolor sit amet"
+                                        },
+                                        "createdAt": {
+                                          "type": "string",
+                                          "nullable": true,
+                                          "description": "created date",
+                                          "example": "2021-11-23T07:00:00Z"
+                                        }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "title",
+                                        "createdAt"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "post"
+                                  ]
+                                }
+                              ]
+                            }
+                          },
+                          "_count": {
+                            "type": "object",
+                            "properties": {
+                              "posts": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "bookmarks": {
+                                "type": "integer",
+                                "example": 1
+                              }
+                            },
+                            "required": [
+                              "posts",
+                              "bookmarks"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "posts",
+                          "bookmarks",
+                          "_count"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "get an user",
+        "description": "get an user by id",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "user id",
+              "example": "clqj40goe0000z21ibpk26izw"
+            },
+            "required": true,
+            "description": "user id",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "user id",
+                          "example": "clqj40goe0000z21ibpk26izw"
+                        },
+                        "userName": {
+                          "type": "string",
+                          "description": "unique user name",
+                          "example": "John Doe"
+                        },
+                        "imageUrl": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "user image",
+                          "example": "/images/image.png"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "created date",
+                          "example": "2021-11-23T07:00:00Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "updated date",
+                          "example": "2021-11-23T07:00:00Z"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userName",
+                        "imageUrl",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "posts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "post id",
+                                "example": 1
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "post title",
+                                "example": "YLorem ipsum dolor sit amet"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "created date",
+                                "example": "2021-11-23T07:00:00Z"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "title",
+                              "createdAt"
+                            ]
+                          }
+                        },
+                        "bookmarks": {
+                          "type": "array",
+                          "items": {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "postId": {
+                                    "type": "integer",
+                                    "nullable": true,
+                                    "description": "post id",
+                                    "example": 1
+                                  }
+                                },
+                                "required": [
+                                  "postId"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "post": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "integer",
+                                        "description": "post id",
+                                        "example": 1
+                                      },
+                                      "title": {
+                                        "type": "string",
+                                        "description": "post title",
+                                        "example": "YLorem ipsum dolor sit amet"
+                                      },
+                                      "createdAt": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "created date",
+                                        "example": "2021-11-23T07:00:00Z"
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "title",
+                                      "createdAt"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "post"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "_count": {
+                          "type": "object",
+                          "properties": {
+                            "posts": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "bookmarks": {
+                              "type": "integer",
+                              "example": 1
+                            }
+                          },
+                          "required": [
+                            "posts",
+                            "bookmarks"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "posts",
+                        "bookmarks",
+                        "_count"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "updata an user",
+        "description": "update an user by id",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "user id",
+              "example": "clqj40goe0000z21ibpk26izw"
+            },
+            "required": true,
+            "description": "user id",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string",
+                    "description": "unique user name",
+                    "example": "John Doe"
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "user image",
+                    "example": "/images/image.png"
+                  }
+                },
+                "required": [
+                  "userName",
+                  "imageUrl"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "user id",
+                      "example": "clqj40goe0000z21ibpk26izw"
+                    },
+                    "userName": {
+                      "type": "string",
+                      "description": "unique user name",
+                      "example": "John Doe"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "user image",
+                      "example": "/images/image.png"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "created date",
+                      "example": "2021-11-23T07:00:00Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "updated date",
+                      "example": "2021-11-23T07:00:00Z"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "userName",
+                    "imageUrl",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete an user",
+        "description": "delete an user by id",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "user id",
+              "example": "clqj40goe0000z21ibpk26izw"
+            },
+            "required": true,
+            "description": "user id",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "error message"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string",
+                                "example": "error path"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "error message"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "message"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

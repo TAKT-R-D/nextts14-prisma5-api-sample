@@ -33,7 +33,7 @@ export async function middleware(request: Request) {
 
   // Bearer Auth
   // MEMO: except /api/auth/*
-  const regexAuth = new RegExp('/api/auth/*');
+  const regexAuth = new RegExp('/api/(auth|health)/*');
   if (!regexAuth.test(request.url)) {
     const bearerAuthStatusCode = await getBearerAuthStatusCode(request);
     if (bearerAuthStatusCode !== 200) {
