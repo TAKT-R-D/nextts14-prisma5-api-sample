@@ -1,31 +1,49 @@
 import { z } from 'zod';
-import * as builder from '../../BuildOpenApiSchema';
-import { UserSchema } from '../../zod';
-import { Ex, IdCuidSchema as idSchema } from '../Commons';
-import { PostRelation, PostRelationSchema } from './PostSchema';
-import { BookmarkRelation, BookmarkRelationSchema } from './BookmarkSchema';
+import * as builder from '@/schemas/BuildOpenApiSchema';
+import { type User as RequestType } from '@/schemas/zod';
+import {
+  Ex,
+  IdCuidSchema as idSchema,
+  UserModelSchema as ModelSchema,
+  BookmarkModelSchema,
+  PostModelSchema,
+} from '@/schemas/config';
 
 /**
  * PRISMA CONFIGS
- * *PrismaRelation: selected columns when it's called from other models
  * *PrismaSelect: selected columns. if select all, leave it as {}
  * *PrismaInclude: included columns
+ * format*Params: connect etc. if no relational post/put query, just return params.
  */
-export const UserPrismaRelation = {
-  id: true,
-  userName: true,
-  imageUrl: true,
-};
 
 export const UserPrismaSelect = {};
 
 export const UserPrismaInclude = {
   posts: {
     orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
-    select: PostRelation,
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+    },
   },
   bookmarks: {
-    select: BookmarkRelation,
+    select: {
+      postId: true,
+      post: {
+        select: {
+          title: true,
+          createdAt: true,
+          author: {
+            select: {
+              id: true,
+              userName: true,
+              imageUrl: true,
+            },
+          },
+        },
+      },
+    },
   },
   _count: {
     select: {
@@ -35,38 +53,49 @@ export const UserPrismaInclude = {
   },
 };
 
+export function formatUserParams(params: Partial<RequestType>) {
+  return params;
+}
+
 /**
  * OPENAPI CONFIGS
  * add describe & example
  *
- * _modelSchema: basic model extends zod modelSchema
- * *RelationSchema: should be same columns as *PrismaRelation
- * _findSchema: should be same columns as *PrismaSelect + *PrismaInclude
+ * _requestPostSchema: request body for POST request
+ * _requestPutSchema: request body for PUT request. basically all are optional
+ * _responseSchema: response body with relations
  */
-// openapi: add describe & example
-const _modelSchema = UserSchema.extend({
-  id: UserSchema.shape.id.describe('user id').openapi(Ex.cuid),
-  userName: UserSchema.shape.userName
-    .describe('unique user name')
-    .openapi(Ex.name),
-  imageUrl: UserSchema.shape.imageUrl.describe('user image').openapi(Ex.image),
-  createdAt: UserSchema.shape.createdAt
-    .describe('created date')
-    .openapi(Ex.date),
-  updatedAt: UserSchema.shape.updatedAt
-    .describe('updated date')
-    .openapi(Ex.date),
+
+const _requestPostSchema = ModelSchema.pick({
+  userName: true,
+  imageUrl: true,
 });
 
-export const UserRelationSchema = _modelSchema.omit({
-  createdAt: true,
-  updatedAt: true,
+const _requestPutSchema = _requestPostSchema.extend({
+  userName: _requestPostSchema.shape.userName.optional(),
+  imageUrl: _requestPostSchema.shape.imageUrl.optional(),
 });
 
-const _findSchema: any = _modelSchema.and(
+const _responseSchema = ModelSchema.merge(
   z.object({
-    posts: z.array(PostRelationSchema),
-    bookmarks: z.array(BookmarkRelationSchema),
+    posts: z.array(
+      PostModelSchema.pick({ id: true, title: true, createdAt: true })
+    ),
+    bookmarks: z.array(
+      BookmarkModelSchema.pick({ postId: true }).merge(
+        z.object({
+          post: PostModelSchema.pick({ title: true, createdAt: true }).merge(
+            z.object({
+              author: ModelSchema.pick({
+                id: true,
+                userName: true,
+                imageUrl: true,
+              }),
+            })
+          ),
+        })
+      )
+    ),
     _count: z.object({
       posts: z.number().int().openapi(Ex.number),
       bookmarks: z.number().int().openapi(Ex.number),
@@ -76,29 +105,30 @@ const _findSchema: any = _modelSchema.and(
 
 /**
  * OPENAPI PATH CONFIG
- * path, tags, etc
+ * path, summary, description, tags(user/cms), etc
  */
-export const UserFindManySchema = builder.getFindManySchema(
-  '/users',
-  'get users',
-  'get users',
-  'user',
-  _findSchema
-);
+
 export const UserCreateSchema = builder.getCreateSchema(
   '/users',
   'create an user',
   'create an user',
   'user',
-  _modelSchema,
-  UserRelationSchema
+  _requestPostSchema,
+  ModelSchema
+);
+export const UserFindManySchema = builder.getFindManySchema(
+  '/users',
+  'get users',
+  'get users',
+  'user',
+  _responseSchema
 );
 export const UserFindUniqueSchema = builder.getFindUniqueSchema(
   '/users/{id}',
   'get an user',
   'get an user by id',
   'user',
-  _findSchema,
+  _responseSchema,
   idSchema
 );
 export const UserUpdateSchema = builder.getUpdateSchema(
@@ -106,8 +136,8 @@ export const UserUpdateSchema = builder.getUpdateSchema(
   'updata an user',
   'update an user by id',
   'user',
-  _modelSchema,
-  UserRelationSchema,
+  _requestPutSchema,
+  ModelSchema,
   idSchema
 );
 export const UserDeleteSchema = builder.getDeleteSchema(

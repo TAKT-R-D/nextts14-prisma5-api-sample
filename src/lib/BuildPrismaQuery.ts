@@ -1,7 +1,7 @@
 import { getCommonQuery } from './CommonQueryHandler';
 import { isEmptyObject } from './Utils';
 
-function _mergeQuery(orgQuery: Object, key: string, value: Object): Object {
+function _mergeQuery(orgQuery: object, key: string, value: object): object {
   if (!isEmptyObject(value)) {
     return { ...orgQuery, [key]: value };
   } else {
@@ -10,9 +10,9 @@ function _mergeQuery(orgQuery: Object, key: string, value: Object): Object {
 }
 
 export async function getPrismaFindUniqueQuery(
-  select: Object,
-  include: Object
-): Promise<Object> {
+  select: object,
+  include: object
+): Promise<object> {
   let findQuery = {};
 
   // select, include
@@ -23,10 +23,10 @@ export async function getPrismaFindUniqueQuery(
 }
 
 export async function getPrismaFindManyQuery(
-  select: Object,
-  include: Object,
+  select: object,
+  include: object,
   searchParams: URLSearchParams
-): Promise<Object> {
+): Promise<object> {
   let findQuery = {};
 
   // select, include

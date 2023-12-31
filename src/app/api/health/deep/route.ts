@@ -1,6 +1,6 @@
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/Prisma';
 import { handlePrismaError } from '@/lib/PrismaErrorHandler';
-import { NextResponse } from 'next/server';
 
 // health check with database connection
 export async function GET(request: Request) {
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
       };
     })
     .catch((err) => {
-      const { errorCode, errorObject } = handlePrismaError(err);
+      const { errorObject } = handlePrismaError(err);
       statusCode = 503;
       return {
         status: 'fail',

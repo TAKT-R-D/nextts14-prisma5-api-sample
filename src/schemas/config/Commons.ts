@@ -3,6 +3,7 @@ import {
   extendZodWithOpenApi,
   ResponseConfig,
 } from '@asteasolutions/zod-to-openapi';
+import { ERROR_MAP } from '@/lib/ErrorMessages';
 
 extendZodWithOpenApi(z);
 
@@ -101,76 +102,78 @@ export const IdCuidSchema: any = z.object({
 });
 
 // errors
-const ErrorSchema = z.object({
-  error: z.object({
-    message: z.string().openapi(Ex.error),
-    errors: z
-      .array(
-        z.object({
-          path: z.string().openapi({ example: 'error path' }),
-          message: z.string().openapi({ example: 'error message' }),
-        })
-      )
-      .optional(),
-  }),
-});
+function _ErrorSchema(errorCode: number) {
+  return z.object({
+    error: z.object({
+      message: z.string().openapi({ example: ERROR_MAP[errorCode].message }),
+      errors: z
+        .array(
+          z.object({
+            path: z.string().openapi({ example: 'error path' }),
+            message: z.string().openapi({ example: 'error message' }),
+          })
+        )
+        .optional(),
+    }),
+  });
+}
 
-const Error400: ResponseConfig = {
-  description: 'Bad Request',
-  content: { 'application/json': { schema: ErrorSchema } },
+const _Error400: ResponseConfig = {
+  description: ERROR_MAP[400].message,
+  content: { 'application/json': { schema: _ErrorSchema(400) } },
 };
 
-const Error401: ResponseConfig = {
-  description: 'Unauthorized',
-  content: { 'application/json': { schema: ErrorSchema } },
+const _Error401: ResponseConfig = {
+  description: ERROR_MAP[401].message,
+  content: { 'application/json': { schema: _ErrorSchema(401) } },
 };
 
-const Error404: ResponseConfig = {
-  description: 'Not Found',
-  content: { 'application/json': { schema: ErrorSchema } },
+const _Error404: ResponseConfig = {
+  description: ERROR_MAP[404].message,
+  content: { 'application/json': { schema: _ErrorSchema(404) } },
 };
 
-const Error406: ResponseConfig = {
-  description: 'Not Acceptable',
-  content: { 'application/json': { schema: ErrorSchema } },
+const _Error406: ResponseConfig = {
+  description: ERROR_MAP[406].message,
+  content: { 'application/json': { schema: _ErrorSchema(406) } },
 };
 
-const Error500: ResponseConfig = {
-  description: 'Internal Server Error',
-  content: { 'application/json': { schema: ErrorSchema } },
+const _Error500: ResponseConfig = {
+  description: ERROR_MAP[500].message,
+  content: { 'application/json': { schema: _ErrorSchema(500) } },
 };
 
-const ErrorHealth503: ResponseConfig = {
-  description: 'Service Unavailable',
+const _ErrorHealth503: ResponseConfig = {
+  description: ERROR_MAP[503].message,
   content: {
     'application/health+json': {
       schema: z.object({
         status: z.string().openapi({ example: 'fail' }),
         message: z.string().openapi({ example: 'failed to connect' }),
-        details: ErrorSchema,
+        details: _ErrorSchema(503),
       }),
     },
   },
 };
 
 export const GETErrorResponses: { [statusCode: string]: ResponseConfig } = {
-  400: Error400,
-  401: Error401,
-  404: Error404,
-  500: Error500,
+  400: _Error400,
+  401: _Error401,
+  404: _Error404,
+  500: _Error500,
 };
 export const POSTErrorResponses: { [statusCode: string]: ResponseConfig } = {
-  400: Error400,
-  401: Error401,
-  500: Error500,
+  400: _Error400,
+  401: _Error401,
+  500: _Error500,
 };
 
 export const AuthErrorResponses: { [statusCode: string]: ResponseConfig } = {
-  400: Error400,
-  401: Error401,
-  500: Error500,
+  400: _Error400,
+  401: _Error401,
+  500: _Error500,
 };
 
 export const HealthErrorResponse: { [statusCode: string]: ResponseConfig } = {
-  503: ErrorHealth503,
+  503: _ErrorHealth503,
 };

@@ -5,14 +5,14 @@ import { handlePrismaError } from '@/lib/PrismaErrorHandler';
 import { handleZodError } from '@/lib/ZodErrorHandler';
 import { ERROR_MAP } from '@/lib/ErrorMessages';
 import {
-  UserCreateInputSchema as CreateInputSchema,
-  UserFindManyArgsSchema as FindManyArgsSchema,
-  type User as RequestType,
+  PostCreateInputSchema as CreateInputSchema,
+  PostFindManyArgsSchema as FindManyArgsSchema,
+  type Post as RequestType,
 } from '@/schemas/zod';
 import {
-  UserPrismaInclude as PrismaInclude,
-  UserPrismaSelect as PrismaSelect,
-  formatUserParams,
+  PostPrismaInclude as PrismaInclude,
+  PostPrismaSelect as PrismaSelect,
+  formatPostParams,
 } from '@/schemas/config';
 
 export async function GET(request: NextRequest) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
   }
 
   let statusCode = 200;
-  const res = await prisma.user
+  const res = await prisma.post
     .findMany(query.data)
     .then((res) => {
       if (!res) {
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       statusCode = errorCode;
       return { error: errorObject };
     });
-  const totalCount = await prisma.user.aggregate({ _count: true });
+  const totalCount = await prisma.post.aggregate({ _count: true });
 
   return NextResponse.json(res, {
     headers: {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     .json()
     .catch(() => {});
 
-  const params = formatUserParams(requestBody);
+  const params = formatPostParams(requestBody);
   const query = CreateInputSchema.safeParse(params);
 
   if (query.success === false) {
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
   let statusCode = 200;
 
-  const res = await prisma.user
+  const res = await prisma.post
     .create({
       data: query.data,
     })

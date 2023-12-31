@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getBearerAuthStatusCode } from './lib/BearerAuth';
+import { ERROR_MAP } from './lib/ErrorMessages';
 
 const allowedOrigins =
   process.env.NODE_ENV === 'production'
@@ -11,13 +12,7 @@ export async function middleware(request: Request) {
 
   // CORS, headers
   if ((origin && !allowedOrigins.includes(origin)) || !origin) {
-    return new NextResponse(null, {
-      status: 400,
-      statusText: 'Bad Request',
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    });
+    return NextResponse.json({ error: ERROR_MAP[400] }, { status: 400 });
     // MEMO: Next.js automatically returns 204 for OPTIONS requests if no error
   }
 
@@ -37,12 +32,10 @@ export async function middleware(request: Request) {
   if (!regexAuth.test(request.url)) {
     const bearerAuthStatusCode = await getBearerAuthStatusCode(request);
     if (bearerAuthStatusCode !== 200) {
-      return new NextResponse(null, {
-        status: bearerAuthStatusCode,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-      });
+      return NextResponse.json(
+        { error: ERROR_MAP[bearerAuthStatusCode] },
+        { status: bearerAuthStatusCode }
+      );
     }
   }
   // session check, etc... if needed

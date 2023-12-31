@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "openapi:generate": "ts-node src/schemas/generateOpenAPI.ts"
+    "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
+    "scaffold": "scaffdog generate"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -34,7 +35,9 @@
     "prisma": "^5.7.0",
     "prisma-dbml-generator": "^0.10.0",
     "prisma-erd-generator": "^1.11.2",
+    "scaffdog": "^3.0.0",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }

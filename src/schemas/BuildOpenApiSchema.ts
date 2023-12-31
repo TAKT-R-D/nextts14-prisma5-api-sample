@@ -6,7 +6,7 @@ import {
   POSTErrorResponses,
   AuthErrorResponses,
   HealthErrorResponse,
-} from './config/Commons';
+} from '@/schemas/config/Commons';
 
 type errorType = { [statusCode: string]: ResponseConfig };
 
@@ -16,8 +16,8 @@ export function getCreateSchema(
   summary: string,
   description: string,
   tag: string,
-  modelSchema: z.AnyZodObject,
-  postSchema: z.AnyZodObject,
+  requestSchema: z.AnyZodObject,
+  responseSchema: z.AnyZodObject,
   createErrors?: errorType | undefined
 ): RouteConfig {
   const errors = createErrors ? createErrors : POSTErrorResponses;
@@ -29,7 +29,7 @@ export function getCreateSchema(
     request: {
       body: {
         content: {
-          'application/json': { schema: postSchema.omit({ id: true }) },
+          'application/json': { schema: requestSchema },
         },
       },
     },
@@ -37,7 +37,7 @@ export function getCreateSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: modelSchema },
+          'application/json': { schema: responseSchema },
         },
       },
       ...errors,
@@ -52,7 +52,7 @@ export function getFindManySchema(
   summary: string,
   description: string,
   tag: string,
-  findSchema: z.AnyZodObject,
+  responseSchema: z.AnyZodObject,
   findQuery?: z.AnyZodObject | undefined,
   findErrors?: errorType | undefined
 ): RouteConfig {
@@ -69,7 +69,7 @@ export function getFindManySchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: z.array(findSchema) },
+          'application/json': { schema: z.array(responseSchema) },
         },
       },
       /* -> no recodes, then return 404
@@ -88,7 +88,7 @@ export function getFindUniqueSchema(
   summary: string,
   description: string,
   tag: string,
-  findSchema: z.AnyZodObject,
+  responseSchema: z.AnyZodObject,
   idSchema: z.AnyZodObject,
   findErrors?: errorType | undefined
 ): RouteConfig {
@@ -106,7 +106,7 @@ export function getFindUniqueSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: findSchema },
+          'application/json': { schema: responseSchema },
         },
       },
       /* -> no recodes, then return 404
@@ -126,8 +126,8 @@ export function getUpdateSchema(
   summary: string,
   description: string,
   tag: string,
-  modelSchema: z.AnyZodObject,
-  postSchema: z.AnyZodObject,
+  requestSchema: z.AnyZodObject,
+  responseSchema: z.AnyZodObject,
   idSchema: z.AnyZodObject,
   createErrors?: errorType | undefined
 ): RouteConfig {
@@ -141,7 +141,7 @@ export function getUpdateSchema(
       params: idSchema,
       body: {
         content: {
-          'application/json': { schema: postSchema.omit({ id: true }) },
+          'application/json': { schema: requestSchema },
         },
       },
     },
@@ -149,7 +149,7 @@ export function getUpdateSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: modelSchema },
+          'application/json': { schema: responseSchema },
         },
       },
       ...errors,

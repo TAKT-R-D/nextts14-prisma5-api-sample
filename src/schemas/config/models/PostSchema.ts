@@ -1,36 +1,150 @@
-export const PostRelation = {
-  id: true,
-  title: true,
-  createdAt: true,
+import { z } from 'zod';
+import * as builder from '@/schemas/BuildOpenApiSchema';
+import { type Post as RequestType } from '@/schemas/zod';
+import {
+  Ex,
+  IdIntSchema as idSchema,
+  PostModelSchema as ModelSchema,
+  BookmarkModelSchema,
+  UserModelSchema,
+} from '@/schemas/config';
+
+/**
+ * PRISMA CONFIGS
+ * *PrismaSelect: selected columns. if select all, leave it as {}
+ * *PrismaInclude: included columns
+ * format*Params: connect etc. if no relational post/put query, just return params.
+ */
+
+export const PostPrismaSelect = {};
+
+export const PostPrismaInclude = {
+  author: {
+    select: {
+      id: true,
+      userName: true,
+      imageUrl: true,
+    },
+  },
+  bookmarks: {
+    select: {
+      userId: true,
+      user: {
+        select: {
+          id: true,
+          userName: true,
+          imageUrl: true,
+        },
+      },
+    },
+  },
+  _count: {
+    select: {
+      bookmarks: true,
+    },
+  },
 };
 
-export const PostSelect = {};
+export function formatPostParams(params: Partial<RequestType>) {
+  const { authorId, ...rest } = params;
+  let formattedParams: any = { ...rest };
+  if (authorId) {
+    formattedParams = {
+      ...formattedParams,
+      author: { connect: { id: authorId } },
+    };
+  }
+  return formattedParams;
+}
 
-export const PostInclude = {};
+/**
+ * OPENAPI CONFIGS
+ * add describe & example
+ *
+ * _requestPostSchema: request body for POST request
+ * _requestPutSchema: request body for PUT request. basically all are optional
+ * _responseSchema: response body with relations
+ */
 
-import { z } from 'zod';
-import { RouteConfig } from '@asteasolutions/zod-to-openapi';
-import { Ex, CommonQuery, GETErrorResponses } from '../Commons';
-import { PostSchema } from '../../zod';
-import { resolveMx } from 'dns';
-
-const modelSchema = PostSchema.extend({
-  id: PostSchema.shape.id.describe('post id').openapi(Ex.number),
-  title: PostSchema.shape.title.describe('post title').openapi(Ex.shortText),
-  content: PostSchema.shape.content
-    .describe('post content')
-    .openapi(Ex.longText),
-  authorId: PostSchema.shape.authorId.describe('author id').openapi(Ex.cuid),
-  createdAt: PostSchema.shape.createdAt
-    .describe('created date')
-    .openapi(Ex.date),
-  updatedAt: PostSchema.shape.updatedAt
-    .describe('updated date')
-    .openapi(Ex.date),
-});
-
-export const PostRelationSchema = modelSchema.omit({
+const _requestPostSchema = ModelSchema.pick({
+  title: true,
   content: true,
   authorId: true,
-  updatedAt: true,
 });
+
+const _requestPutSchema = _requestPostSchema.extend({
+  title: _requestPostSchema.shape.title.optional(),
+  content: _requestPostSchema.shape.content.optional(),
+  authorId: _requestPostSchema.shape.authorId.optional(),
+});
+
+const _responseSchema = ModelSchema.merge(
+  z.object({
+    author: UserModelSchema.pick({
+      id: true,
+      userName: true,
+      imageUrl: true,
+    }),
+    bookmarks: z.array(
+      BookmarkModelSchema.pick({
+        userId: true,
+      }).merge(
+        z.object({
+          user: UserModelSchema.pick({
+            id: true,
+            userName: true,
+            imageUrl: true,
+          }),
+        })
+      )
+    ),
+    _count: z.object({
+      bookmarks: z.number().int().openapi(Ex.number),
+    }),
+  })
+);
+
+/**
+ * OPENAPI PATH CONFIG
+ * path, summary, description, tags(user/cms), etc
+ */
+
+export const PostCreateSchema = builder.getCreateSchema(
+  '/posts',
+  'create a post',
+  'create a post',
+  'user',
+  _requestPostSchema,
+  ModelSchema
+);
+export const PostFindManySchema = builder.getFindManySchema(
+  '/posts',
+  'get posts list',
+  'get posts list',
+  'user',
+  _responseSchema
+);
+export const PostFindUniqueSchema = builder.getFindUniqueSchema(
+  '/posts/{id}',
+  'get a post',
+  'get a post by id',
+  'user',
+  _responseSchema,
+  idSchema
+);
+export const PostUpdateSchema = builder.getUpdateSchema(
+  '/posts/{id}',
+  'updata a post',
+  'update a post by id',
+  'user',
+  _requestPutSchema,
+  ModelSchema,
+  idSchema
+);
+export const PostDeleteSchema = builder.getDeleteSchema(
+  '/posts/{id}',
+  'delete a post',
+  'delete a post by id',
+  'user',
+  idSchema
+);

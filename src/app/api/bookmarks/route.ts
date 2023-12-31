@@ -5,14 +5,14 @@ import { handlePrismaError } from '@/lib/PrismaErrorHandler';
 import { handleZodError } from '@/lib/ZodErrorHandler';
 import { ERROR_MAP } from '@/lib/ErrorMessages';
 import {
-  UserCreateInputSchema as CreateInputSchema,
-  UserFindManyArgsSchema as FindManyArgsSchema,
-  type User as RequestType,
+  BookmarkCreateInputSchema as CreateInputSchema,
+  BookmarkFindManyArgsSchema as FindManyArgsSchema,
+  type Bookmark as RequestType,
 } from '@/schemas/zod';
 import {
-  UserPrismaInclude as PrismaInclude,
-  UserPrismaSelect as PrismaSelect,
-  formatUserParams,
+  BookmarkPrismaInclude as PrismaInclude,
+  BookmarkPrismaSelect as PrismaSelect,
+  formatBookmarkParams,
 } from '@/schemas/config';
 
 export async function GET(request: NextRequest) {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
   }
 
   let statusCode = 200;
-  const res = await prisma.user
+  const res = await prisma.bookmark
     .findMany(query.data)
     .then((res) => {
       if (!res) {
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       statusCode = errorCode;
       return { error: errorObject };
     });
-  const totalCount = await prisma.user.aggregate({ _count: true });
+  const totalCount = await prisma.bookmark.aggregate({ _count: true });
 
   return NextResponse.json(res, {
     headers: {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     .json()
     .catch(() => {});
 
-  const params = formatUserParams(requestBody);
+  const params = formatBookmarkParams(requestBody);
   const query = CreateInputSchema.safeParse(params);
 
   if (query.success === false) {
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
   let statusCode = 200;
 
-  const res = await prisma.user
+  const res = await prisma.bookmark
     .create({
       data: query.data,
     })

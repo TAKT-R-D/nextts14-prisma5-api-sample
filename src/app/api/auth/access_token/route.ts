@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import * as jose from 'jose';
 import { prisma } from '@/lib/Prisma';
-import { AuthRequestSchema } from '@/schemas/config';
-import { handleZodError } from '@/lib/ZodErrorHandler';
 import { handlePrismaError } from '@/lib/PrismaErrorHandler';
+import { handleZodError } from '@/lib/ZodErrorHandler';
+import { AuthRequestSchema } from '@/schemas/config';
+import { ERROR_MAP } from '@/lib/ErrorMessages';
 
 const API_SECRET = process.env.API_SECRET;
 const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_ISSUER = process.env.JWT_ISSUER || 'urn:example:issuer';
+const JWT_AUDIENCE = process.env.JWT_AUDIENCE || 'urn:example:audience';
+const JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME || '1h';
 
 type RequestType = {
   userId: string;
@@ -16,10 +20,7 @@ type RequestType = {
 export async function POST(request: Request) {
   const requestBody: RequestType = await request.json().catch(() => {});
   if (!requestBody) {
-    return NextResponse.json(
-      { error: { message: 'empty request' } },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: ERROR_MAP[400] }, { status: 400 });
   }
 
   const query = AuthRequestSchema.safeParse(requestBody);
@@ -39,14 +40,11 @@ export async function POST(request: Request) {
     statusCode = 401;
   }
 
-  // TODO: body
   if (statusCode !== 200) {
-    return new NextResponse(null, {
-      status: statusCode,
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-    });
+    return NextResponse.json(
+      { error: ERROR_MAP[statusCode] },
+      { status: statusCode }
+    );
   }
 
   const user = await prisma.user
@@ -73,9 +71,9 @@ export async function POST(request: Request) {
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setIssuer('urn:example:issuer')
-    .setAudience('urn:example:audience')
-    .setExpirationTime('10h')
+    .setIssuer(JWT_ISSUER)
+    .setAudience(JWT_AUDIENCE)
+    .setExpirationTime(JWT_EXPIRATION_TIME)
     .sign(secretKey);
 
   return NextResponse.json({

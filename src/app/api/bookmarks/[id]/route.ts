@@ -6,15 +6,15 @@ import { handlePrismaError } from '@/lib/PrismaErrorHandler';
 import { validateSlugParameters } from '@/lib/SchemaValidator';
 import { handleZodError } from '@/lib/ZodErrorHandler';
 import {
-  UserFindUniqueArgsSchema as FindUniqueArgsSchema,
-  UserUpdateInputSchema as UpdateInputSchema,
-  UserWhereUniqueInputSchema as WhereUniqueInputSchema,
-  type User as RequestType,
+  BookmarkFindUniqueArgsSchema as FindUniqueArgsSchema,
+  BookmarkUpdateInputSchema as UpdateInputSchema,
+  BookmarkWhereUniqueInputSchema as WhereUniqueInputSchema,
+  type Bookmark as RequestType,
 } from '@/schemas/zod';
 import {
-  UserPrismaInclude as PrismaInclude,
-  UserPrismaSelect as PrismaSelect,
-  formatUserParams,
+  BookmarkPrismaInclude as PrismaInclude,
+  BookmarkPrismaSelect as PrismaSelect,
+  formatBookmarkParams,
 } from '@/schemas/config';
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 };
 
 async function _validateSlugParameters(id: string) {
-  return await validateSlugParameters(WhereUniqueInputSchema, id);
+  return await validateSlugParameters(WhereUniqueInputSchema, +id);
 }
 
 export async function GET(request: Request, { params: { id } }: Props) {
@@ -47,7 +47,7 @@ export async function GET(request: Request, { params: { id } }: Props) {
   }
 
   let statusCode = 200;
-  const res = await prisma.user
+  const res = await prisma.bookmark
     .findUnique(query.data)
     .then((res) => {
       if (!res) {
@@ -76,8 +76,8 @@ export async function PUT(request: Request, { params: { id } }: Props) {
     .json()
     .catch(() => {});
 
-  const params = formatUserParams(requestBody);
-  const query = UpdateInputSchema.safeParse(requestBody);
+  const params = formatBookmarkParams(requestBody);
+  const query = UpdateInputSchema.safeParse(params);
 
   if (query.success === false) {
     const { errorCode, errorObject } = handleZodError(query.error);
@@ -86,7 +86,7 @@ export async function PUT(request: Request, { params: { id } }: Props) {
 
   let statusCode = 200;
 
-  const res = await prisma.user
+  const res = await prisma.bookmark
     .update({
       where,
       data: query.data,
@@ -108,7 +108,7 @@ export async function DELETE(request: Request, { params: { id } }: Props) {
 
   let statusCode = 204;
 
-  const res = await prisma.user
+  const res = await prisma.bookmark
     .delete({
       where,
     })
