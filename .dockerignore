@@ -1,6 +1,10 @@
 .git/
 node_modules/
-.sample
-.bk
 .scaffdog/
 pgdata/
+
+**/.DS_STORE/
+**/*.sample
+**/*.sample.*
+**/*.bk
+**/*.bk.*
