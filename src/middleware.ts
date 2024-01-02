@@ -4,7 +4,11 @@ import { ERROR_MAP } from './lib/ErrorMessages';
 
 const allowedOrigins =
   process.env.NODE_ENV === 'production'
-    ? ['https://www.yoursite.com', 'https://yoursite.com']
+    ? [
+        'https://www.yoursite.com',
+        'https://yoursite.com',
+        'http://localhost:3000',
+      ]
     : ['http://localhost:3000', 'https://www.google.com'];
 
 export async function middleware(request: Request) {
@@ -17,7 +21,7 @@ export async function middleware(request: Request) {
   }
 
   const newHeaders = new Headers(request.headers);
-  // MEMO: Browsers check headers also after pre-flight requests passed
+  // MEMO: Browsers check headers even after pre-flight requests passed
   newHeaders.set('Access-Control-Allow-Origin', origin);
   newHeaders.set(
     'Access-Control-Allow-Headers',

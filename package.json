@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "next build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
     "scaffold": "scaffdog generate"
@@ -39,5 +40,9 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
+  },
+  "volta": {
+    "node": "20.10.0",
+    "yarn": "1.22.19"
   }
 }

@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Docker/Dockerfile
+    platform: linux/amd64
+    ports:
+      - '3000:3000'
+    container_name: ${CONTAINER_NAME}

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { getPrismaFindUniqueQuery } from '@/lib/BuildPrismaQuery';
 import { ERROR_MAP } from '@/lib/ErrorMessages';

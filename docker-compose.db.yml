@@ -1,15 +1,6 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: ./
-      dockerfile: ./Docker/Dockerfile
-    ports:
-      - '3000:3000'
-    environment:
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASS}@db:5432/mydb?schema=public
-    container_name: ${CONTAINER_NAME}
   db:
     image: 'postgres:12'
     ports:
