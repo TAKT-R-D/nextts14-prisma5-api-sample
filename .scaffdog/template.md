@@ -282,7 +282,6 @@ import * as builder from '@/schemas/BuildOpenApiSchema';
 import { type {{ modulep }} as RequestType } from '@/schemas/zod';
 import {
   Ex,
-  Id{{ if inputs.isIdNumber }}Int{{ else }}Cuid{{ end }}Schema as idSchema,
   {{ modulep}}ModelSchema as ModelSchema,
 } from '@/schemas/config';
 
@@ -356,23 +355,20 @@ export const {{ modulep }}FindUniqueSchema = builder.getFindUniqueSchema(
   'get a {{ module }} by id',
   '{{ inputs.tag }}',
   _responseSchema,
-  idSchema
 );
 export const {{ modulep }}UpdateSchema = builder.getUpdateSchema(
   '/{{ modules }}/{id}',
-  'updata a {{ module }}',
+  'update a {{ module }}',
   'update a {{ module }} by id',
   '{{ inputs.tag }}',
   _requestPutSchema,
   ModelSchema,
-  idSchema
 );
 export const {{ modulep }}DeleteSchema = builder.getDeleteSchema(
   '/{{ modules }}/{id}',
   'delete a {{ module }}',
   'delete a {{ module }} by id',
   '{{ inputs.tag }}',
-  idSchema
 );
 
 ```
@@ -395,9 +391,9 @@ export * from './models/{{ inputs.module | pascal }}Schema';
 {{ body }}
   { schema: schm.{{ inputs.module | pascal }}CreateSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false },
   { schema: schm.{{ inputs.module | pascal }}FindManySchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: true },
-  { schema: schm.{{ inputs.module | pascal }}FindUniqueSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false },
-  { schema: schm.{{ inputs.module | pascal }}UpdateSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false },
-  { schema: schm.{{ inputs.module | pascal }}DeleteSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false },
+  { schema: schm.{{ inputs.module | pascal }}FindUniqueSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false, slugIdType: {{ if inputs.isIdNumber }}'int'{{ else }}'cuid'{{ end }} },
+  { schema: schm.{{ inputs.module | pascal }}UpdateSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false, slugIdType: {{ if inputs.isIdNumber }}'int'{{ else }}'cuid'{{ end }} },
+  { schema: schm.{{ inputs.module | pascal }}DeleteSchema, requireAuth: {{ if inputs.isAuthRequired }}true{{ else }}false{{ end }}, isMultiLines: false, slugIdType: {{ if inputs.isIdNumber }}'int'{{ else }}'cuid'{{ end }} },
 ];
 
 ```

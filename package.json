@@ -8,9 +8,10 @@
     "start": "next start",
     "start:standalone": "next build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
-    "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
     "scaffold": "scaffdog generate",
-    "license:generate": "ts-node tools/LicenseChecker.ts"
+    "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
+    "license:generate": "ts-node tools/LicenseChecker.ts",
+    "test:dredd": "./tests/dredd.sh"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -32,6 +33,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/swagger-ui-react": "^4.18.3",
+    "dredd": "^14.1.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "license-checker": "^25.0.1",

@@ -2,7 +2,6 @@ import { z } from 'zod';
 import * as builder from '@/schemas/BuildOpenApiSchema';
 import { type Bookmark as RequestType } from '@/schemas/zod';
 import {
-  IdIntSchema as idSchema,
   BookmarkModelSchema as ModelSchema,
   PostModelSchema,
   UserModelSchema,
@@ -98,22 +97,19 @@ export const BookmarkFindUniqueSchema = builder.getFindUniqueSchema(
   'get a bookmark',
   'get a bookmark by id',
   'user',
-  _responseSchema,
-  idSchema
+  _responseSchema
 );
 export const BookmarkUpdateSchema = builder.getUpdateSchema(
   '/bookmarks/{id}',
-  'updata a bookmark',
+  'update a bookmark',
   'update a bookmark by id',
   'user',
   _requestPutSchema,
-  ModelSchema,
-  idSchema
+  ModelSchema
 );
 export const BookmarkDeleteSchema = builder.getDeleteSchema(
   '/bookmarks/{id}',
   'delete a bookmark',
   'delete a bookmark by id',
-  'user',
-  idSchema
+  'user'
 );

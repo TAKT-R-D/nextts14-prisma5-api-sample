@@ -29,7 +29,7 @@ export function getCreateSchema(
     request: {
       body: {
         content: {
-          'application/json': { schema: requestSchema },
+          'application/json; charset=utf-8': { schema: requestSchema },
         },
       },
     },
@@ -37,7 +37,7 @@ export function getCreateSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: responseSchema },
+          'application/json; charset=utf-8': { schema: responseSchema },
         },
       },
       ...errors,
@@ -69,7 +69,9 @@ export function getFindManySchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: z.array(responseSchema) },
+          'application/json; charset=utf-8': {
+            schema: z.array(responseSchema),
+          },
         },
       },
       /* -> no recodes, then return 404
@@ -89,7 +91,6 @@ export function getFindUniqueSchema(
   description: string,
   tag: string,
   responseSchema: z.AnyZodObject,
-  idSchema: z.AnyZodObject,
   findErrors?: errorType | undefined
 ): RouteConfig {
   const errors = findErrors ? findErrors : GETErrorResponses;
@@ -99,14 +100,12 @@ export function getFindUniqueSchema(
     path,
     summary,
     description,
-    request: {
-      params: idSchema,
-    },
+    request: {},
     responses: {
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: responseSchema },
+          'application/json; charset=utf-8': { schema: responseSchema },
         },
       },
       /* -> no recodes, then return 404
@@ -128,7 +127,6 @@ export function getUpdateSchema(
   tag: string,
   requestSchema: z.AnyZodObject,
   responseSchema: z.AnyZodObject,
-  idSchema: z.AnyZodObject,
   createErrors?: errorType | undefined
 ): RouteConfig {
   const errors = createErrors ? createErrors : POSTErrorResponses;
@@ -138,10 +136,9 @@ export function getUpdateSchema(
     summary,
     description,
     request: {
-      params: idSchema,
       body: {
         content: {
-          'application/json': { schema: requestSchema },
+          'application/json; charset=utf-8': { schema: requestSchema },
         },
       },
     },
@@ -149,7 +146,7 @@ export function getUpdateSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: responseSchema },
+          'application/json; charset=utf-8': { schema: responseSchema },
         },
       },
       ...errors,
@@ -164,7 +161,6 @@ export function getDeleteSchema(
   summary: string,
   description: string,
   tag: string,
-  idSchema: z.AnyZodObject,
   createErrors?: errorType | undefined
 ): RouteConfig {
   const errors = createErrors ? createErrors : POSTErrorResponses;
@@ -173,9 +169,7 @@ export function getDeleteSchema(
     path,
     summary,
     description,
-    request: {
-      params: idSchema,
-    },
+    request: {},
     responses: {
       204: {
         description: 'No Content',
@@ -202,7 +196,7 @@ export function getAuthSchema(
     request: {
       body: {
         content: {
-          'application/json': { schema: requestSchema },
+          'application/json; charset=utf-8': { schema: requestSchema },
         },
       },
     },
@@ -210,7 +204,7 @@ export function getAuthSchema(
       200: {
         description: 'success',
         content: {
-          'application/json': { schema: responseSchema },
+          'application/json; charset=utf-8': { schema: responseSchema },
         },
       },
       ...AuthErrorResponses,
@@ -234,7 +228,7 @@ export function getHealthSchema(
       200: {
         description: 'success',
         content: {
-          'application/health+json': { schema: responseSchema },
+          'application/health+json; charset=utf-8': { schema: responseSchema },
         },
       },
       ...HealthErrorResponse,

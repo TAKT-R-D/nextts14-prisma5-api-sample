@@ -19,7 +19,7 @@ export const Ex = {
     example:
       'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJOYW1lIjoiYWRtaW4iLCJpbWFnZVVybCI6Ii90YWt0LnBuZyIsImlhdCI6MTcwMzA0MDUzMCwiaXNzIjoidXJuOmV4YW1wbGU6aXNzdWVyIiwiYXVkIjoidXJuOmV4YW1wbGU6YXVkaWVuY2UiLCJleHAiOjE3MDMwNzY1MzB9.UGcaC4PI-_2hFTThL3WhgTrMZbnulivAoyVjh14hq-d',
   },
-  secret: { example: 'YOUR_SECRET' },
+  secret: { example: 'YOUR_API_SECRET' },
   shortText: { example: 'YLorem ipsum dolor sit amet' },
   longText: {
     example:
@@ -78,9 +78,11 @@ export const XTotalCountHeaderComponent: {
   type: 'headers',
   name: 'x-total-count',
   component: {
-    example: 123,
-    type: 'integer',
     description: 'Total number of items in the collection.',
+    schema: {
+      type: 'integer',
+      example: 123,
+    },
   },
 };
 
@@ -92,13 +94,6 @@ export const CommonQuery: AnyZodObject = z.object({
     .optional()
     .describe('join key:direction with comma')
     .openapi({ example: 'id:desc,updatedAt:asc' }),
-});
-
-export const IdIntSchema: any = z.object({
-  id: z.number().int().describe('user id').openapi(Ex.number),
-});
-export const IdCuidSchema: any = z.object({
-  id: z.string().cuid().describe('user id').openapi(Ex.cuid),
 });
 
 // errors
@@ -120,33 +115,33 @@ function _ErrorSchema(errorCode: number) {
 
 const _Error400: ResponseConfig = {
   description: ERROR_MAP[400].message,
-  content: { 'application/json': { schema: _ErrorSchema(400) } },
+  content: { 'application/json; charset=utf-8': { schema: _ErrorSchema(400) } },
 };
 
 const _Error401: ResponseConfig = {
   description: ERROR_MAP[401].message,
-  content: { 'application/json': { schema: _ErrorSchema(401) } },
+  content: { 'application/json; charset=utf-8': { schema: _ErrorSchema(401) } },
 };
 
 const _Error404: ResponseConfig = {
   description: ERROR_MAP[404].message,
-  content: { 'application/json': { schema: _ErrorSchema(404) } },
+  content: { 'application/json; charset=utf-8': { schema: _ErrorSchema(404) } },
 };
 
 const _Error406: ResponseConfig = {
   description: ERROR_MAP[406].message,
-  content: { 'application/json': { schema: _ErrorSchema(406) } },
+  content: { 'application/json; charset=utf-8': { schema: _ErrorSchema(406) } },
 };
 
 const _Error500: ResponseConfig = {
   description: ERROR_MAP[500].message,
-  content: { 'application/json': { schema: _ErrorSchema(500) } },
+  content: { 'application/json; charset=utf-8': { schema: _ErrorSchema(500) } },
 };
 
 const _ErrorHealth503: ResponseConfig = {
   description: ERROR_MAP[503].message,
   content: {
-    'application/health+json': {
+    'application/health+json; charset=utf-8': {
       schema: z.object({
         status: z.string().openapi({ example: 'fail' }),
         message: z.string().openapi({ example: 'failed to connect' }),

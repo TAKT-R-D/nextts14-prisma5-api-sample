@@ -42,13 +42,43 @@
     },
     "headers": {
       "x-total-count": {
-        "example": 123,
-        "type": "integer",
-        "description": "Total number of items in the collection."
+        "description": "Total number of items in the collection.",
+        "schema": {
+          "type": "integer",
+          "example": 123
+        }
       }
     },
-    "schemas": {},
-    "parameters": {}
+    "schemas": {
+      "IntId": {
+        "type": "number",
+        "example": 1
+      },
+      "CuidId": {
+        "type": "string",
+        "example": "clqj40goe0000z21ibpk26izw"
+      }
+    },
+    "parameters": {
+      "IntId": {
+        "schema": {
+          "$ref": "#/components/schemas/IntId"
+        },
+        "required": true,
+        "name": "id",
+        "in": "path",
+        "example": 1
+      },
+      "CuidId": {
+        "schema": {
+          "$ref": "#/components/schemas/CuidId"
+        },
+        "required": true,
+        "name": "id",
+        "in": "path",
+        "example": "clqj40goe0000z21ibpk26izw"
+      }
+    }
   },
   "paths": {
     "/auth/access_token": {
@@ -60,7 +90,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -72,7 +102,7 @@
                   "secret": {
                     "type": "string",
                     "description": "api secret",
-                    "example": "YOUR_SECRET"
+                    "example": "YOUR_API_SECRET"
                   }
                 },
                 "required": [
@@ -87,7 +117,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -107,7 +137,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -154,7 +184,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -201,7 +231,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -256,7 +286,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/health+json": {
+              "application/health+json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -280,7 +310,7 @@
           "503": {
             "description": "Service Unavailable",
             "content": {
-              "application/health+json": {
+              "application/health+json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -353,7 +383,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/health+json": {
+              "application/health+json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -377,7 +407,7 @@
           "503": {
             "description": "Service Unavailable",
             "content": {
-              "application/health+json": {
+              "application/health+json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -456,7 +486,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -484,7 +514,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -531,7 +561,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -578,7 +608,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -625,7 +655,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -726,7 +756,7 @@
               }
             },
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -890,7 +920,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -937,7 +967,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -984,7 +1014,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1031,7 +1061,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1092,22 +1122,14 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "string",
-              "description": "user id",
-              "example": "clqj40goe0000z21ibpk26izw"
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/CuidId"
           }
         ],
         "responses": {
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1268,7 +1290,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1315,7 +1337,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1362,7 +1384,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1409,7 +1431,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1456,7 +1478,7 @@
         }
       },
       "put": {
-        "summary": "updata an user",
+        "summary": "update an user",
         "description": "update an user by id",
         "tags": [
           "user"
@@ -1468,20 +1490,12 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "string",
-              "description": "user id",
-              "example": "clqj40goe0000z21ibpk26izw"
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/CuidId"
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1505,7 +1519,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1552,7 +1566,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1599,7 +1613,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1646,7 +1660,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1705,15 +1719,7 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "string",
-              "description": "user id",
-              "example": "clqj40goe0000z21ibpk26izw"
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/CuidId"
           }
         ],
         "responses": {
@@ -1723,7 +1729,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1770,7 +1776,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1817,7 +1823,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1878,7 +1884,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1911,7 +1917,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -1963,7 +1969,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2010,7 +2016,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2057,7 +2063,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2158,7 +2164,7 @@
               }
             },
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -2297,7 +2303,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2344,7 +2350,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2391,7 +2397,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2438,7 +2444,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2499,22 +2505,14 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "responses": {
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2650,7 +2648,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2697,7 +2695,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2744,7 +2742,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2791,7 +2789,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2838,7 +2836,7 @@
         }
       },
       "put": {
-        "summary": "updata a post",
+        "summary": "update a post",
         "description": "update a post by id",
         "tags": [
           "user"
@@ -2850,20 +2848,12 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -2891,7 +2881,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2943,7 +2933,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -2990,7 +2980,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3037,7 +3027,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3096,15 +3086,7 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "responses": {
@@ -3114,7 +3096,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3161,7 +3143,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3208,7 +3190,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3269,7 +3251,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -3297,7 +3279,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3337,7 +3319,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3384,7 +3366,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3431,7 +3413,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3532,7 +3514,7 @@
               }
             },
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -3629,7 +3611,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3676,7 +3658,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3723,7 +3705,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3770,7 +3752,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3831,22 +3813,14 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "responses": {
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3940,7 +3914,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -3987,7 +3961,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4034,7 +4008,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4081,7 +4055,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4128,7 +4102,7 @@
         }
       },
       "put": {
-        "summary": "updata a bookmark",
+        "summary": "update a bookmark",
         "description": "update a bookmark by id",
         "tags": [
           "user"
@@ -4140,20 +4114,12 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/json; charset=utf-8": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -4177,7 +4143,7 @@
           "200": {
             "description": "success",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4217,7 +4183,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4264,7 +4230,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4311,7 +4277,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4370,15 +4336,7 @@
         ],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "description": "user id",
-              "example": 1
-            },
-            "required": true,
-            "description": "user id",
-            "name": "id",
-            "in": "path"
+            "$ref": "#/components/parameters/IntId"
           }
         ],
         "responses": {
@@ -4388,7 +4346,7 @@
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4435,7 +4393,7 @@
           "401": {
             "description": "Unauthorized",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -4482,7 +4440,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/json": {
+              "application/json; charset=utf-8": {
                 "schema": {
                   "type": "object",
                   "properties": {

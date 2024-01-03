@@ -3,7 +3,6 @@ import * as builder from '@/schemas/BuildOpenApiSchema';
 import { type Post as RequestType } from '@/schemas/zod';
 import {
   Ex,
-  IdIntSchema as idSchema,
   PostModelSchema as ModelSchema,
   BookmarkModelSchema,
   UserModelSchema,
@@ -129,22 +128,19 @@ export const PostFindUniqueSchema = builder.getFindUniqueSchema(
   'get a post',
   'get a post by id',
   'user',
-  _responseSchema,
-  idSchema
+  _responseSchema
 );
 export const PostUpdateSchema = builder.getUpdateSchema(
   '/posts/{id}',
-  'updata a post',
+  'update a post',
   'update a post by id',
   'user',
   _requestPutSchema,
-  ModelSchema,
-  idSchema
+  ModelSchema
 );
 export const PostDeleteSchema = builder.getDeleteSchema(
   '/posts/{id}',
   'delete a post',
   'delete a post by id',
-  'user',
-  idSchema
+  'user'
 );

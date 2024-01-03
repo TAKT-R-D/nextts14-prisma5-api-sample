@@ -15,6 +15,7 @@ Main features:
   - Licenses list of dependencies
 - Dockerized
   - OpenSSL 3.x support
+- Testing by dredd
 
 ## System Requirements
 
@@ -57,7 +58,7 @@ docker compose up -d
 
 ### Define prisma schema
 
-edit: prisma/schema.prisma
+edit: `prisma/schema.prisma`
 
 ```zsh
 npx prisma migrate dev
@@ -65,7 +66,7 @@ npx prisma migrate dev
 
 ### Generate Zod types etc.
 
-comment out ERD generate setting on .env
+Comment out ERD generate setting on `.env`
 This setting is for docker build.
 
 ```text:.env
@@ -90,8 +91,8 @@ Followings will be generated
 yarn scaffold
 ```
 
-answer questions and then followings will be generated/updated.
-module name must be same as model name in schema.prisma with lower and kebab case.
+Answer questions and then followings will be generated/updated.
+Module name must be same as model name in schema.prisma with lower and kebab case.
 
 ex. user
 
@@ -114,7 +115,7 @@ src
 ### Edit src/schemas/ExtendedModels.ts for OpenAPI document
 
 This file extends generated Zod types model schemas for OpenAPI document.
-basically, only add description and example.
+Basically, just adding description and example.
 
 ### Edit src/schemas/config/models/XxxxSchema.ts
 
@@ -142,14 +143,14 @@ export function formatPostParams(params: Partial<RequestType>) {
 
 #### OpenAPI configuration section
 
-configure `_requestPostSchema`, `_requestPutSchema`, `_responseSchema` with zod grammer.
-do not import between shemas under `src/schemas/config/models`. it will cause reference errors when building application.
+Configure `_requestPostSchema`, `_requestPutSchema`, `_responseSchema` with zod grammer.
+Do not import between shemas under `src/schemas/config/models`. it will cause reference errors when building application.
 
 #### OpenAPI path configuration section
 
-edit path, summary, description, tags...
+Edit path, summary, description, tags...
 
-add new tags on `src/schemas/config/Commons.ts:DocumentConfig/tags`.
+add new tags on `src/schemas/config/Commons.ts > DocumentConfig > tags`.
 
 ### Generate openapi.json
 
@@ -159,9 +160,9 @@ yarn openapi:generate
 
 `public/openapi.json` will be updated.
 
-basic document settings are in `src/schemas/config/Commons.ts`. Edit as you needed.
+Basic document settings are in `src/schemas/config/Commons.ts`. Edit as you needed.
 
-you can see API specification at http://localhost:3000/docs
+You can see API specification at http://localhost:3000/docs
 
 ### Generate LICENSE List of dependencies
 
@@ -170,9 +171,18 @@ yarn license:generate
 ```
 
 `src/app/licenses/licenses.json` will be updated.
-check only packages for production without their dependencies(`package.json > dependencies`).
+Check only packages for production without their dependencies(`package.json > dependencies`).
 
-you can see License list at http://localhost:3000/licenses
+You can see License list at http://localhost:3000/licenses
+
+### Testing
+
+```zsh
+yarn test:dredd
+```
+
+Testing by dredd, GET Methods only as default.
+If you want to test POST, PUT and DELETE methods, edit `tests/hook.js`.
 
 ## For your security
 
