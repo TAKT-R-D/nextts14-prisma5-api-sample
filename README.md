@@ -12,6 +12,7 @@ Main features:
   - ER-Diagram
   - DBML
   - API Specification (OpenAPI)
+  - Licenses list of dependencies
 - Dockerized
   - OpenSSL 3.x support
 
@@ -162,6 +163,17 @@ basic document settings are in `src/schemas/config/Commons.ts`. Edit as you need
 
 you can see API specification at http://localhost:3000/docs
 
+### Generate LICENSE List of dependencies
+
+```zsh
+yarn license:generate
+```
+
+`src/app/licenses/licenses.json` will be updated.
+check only packages for production without their dependencies(`package.json > dependencies`).
+
+you can see License list at http://localhost:3000/licenses
+
 ## For your security
 
-Do not deploy or open access `/docs` and `/openapi.json` on your production.
+Do not deploy or open access `/docs` and `/openapi.json` on your production, if your api is private.

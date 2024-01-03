@@ -1,0 +1,31 @@
+.main {
+  width: 50rem;
+  min-height: 100vh;
+  margin: 2rem auto;
+  font-family: sans-serif;
+  color: var(--text-color);
+}
+.title,
+.link,
+.item {
+  color: var(--heading-color);
+}
+
+.licenseBlock {
+  margin: 2rem;
+}
+
+.licenseContents {
+  width: 100%;
+  height: 10rem;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  line-height: 1.2rem;
+  background: transparent;
+  color: var(--text-color);
+}
+
+.list {
+  padding: 0.5rem 1rem;
+  line-height: 1.5rem;
+}

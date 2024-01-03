@@ -1,0 +1,52 @@
+{
+  "@asteasolutions/zod-to-openapi@6.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/asteasolutions/zod-to-openapi",
+    "licenseFile": "node_modules/@asteasolutions/zod-to-openapi/LICENSE",
+    "publisher": "Astea Solutions"
+  },
+  "@prisma/client@5.7.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/prisma/prisma",
+    "licenseFile": "node_modules/@prisma/client/LICENSE",
+    "publisher": "Tim Suchanek"
+  },
+  "jose@5.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/panva/jose",
+    "licenseFile": "node_modules/jose/LICENSE.md",
+    "publisher": "Filip Skokan"
+  },
+  "next@14.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vercel/next.js",
+    "licenseFile": "node_modules/next/license.md"
+  },
+  "react-dom@18.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "node_modules/react-dom/LICENSE"
+  },
+  "react@18.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "licenseFile": "node_modules/react/LICENSE"
+  },
+  "swagger-ui-react@5.10.5": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/swagger-api/swagger-ui",
+    "licenseFile": "node_modules/swagger-ui-react/LICENSE"
+  },
+  "zod-prisma-types@3.1.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chrishoermann/zod-prisma-types",
+    "licenseFile": "node_modules/zod-prisma-types/Readme.md",
+    "publisher": "Chris Hörmann"
+  },
+  "zod@3.22.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/colinhacks/zod",
+    "licenseFile": "node_modules/zod/LICENSE",
+    "publisher": "Colin McDonnell"
+  }
+}

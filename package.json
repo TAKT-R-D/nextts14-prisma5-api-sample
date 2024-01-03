@@ -9,7 +9,8 @@
     "start:standalone": "next build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
-    "scaffold": "scaffdog generate"
+    "scaffold": "scaffdog generate",
+    "license:generate": "ts-node tools/LicenseChecker.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -18,7 +19,6 @@
     "@asteasolutions/zod-to-openapi": "^6.3.0",
     "@prisma/client": "^5.7.0",
     "jose": "^5.1.3",
-    "limiter": "^2.1.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -27,12 +27,14 @@
     "zod-prisma-types": "^3.1.6"
   },
   "devDependencies": {
+    "@types/license-checker": "^25.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/swagger-ui-react": "^4.18.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "license-checker": "^25.0.1",
     "prisma": "^5.7.0",
     "prisma-dbml-generator": "^0.10.0",
     "prisma-erd-generator": "^1.11.2",
