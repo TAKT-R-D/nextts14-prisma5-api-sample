@@ -22,7 +22,7 @@ Main features:
 - node: 20.10.0
 - yarn: 1.22.19
 - next.js: 14.0.4
-- prisma: 5.7.0
+- prisma: 5.7.1
 - seemore package.json
 
 ## Installation
@@ -81,9 +81,9 @@ npx prisma generate
 
 Followings will be generated
 
-- ER Diagram: prisma/exports/ER-Diagram.svg
-- DBML: prisma/exports/schema.dbml
-- Zod types: src/schemas/zod/\*
+- ER Diagram: `deliverables/ER-Diagram.svg`
+- DBML: `deliverables/schema.dbml`
+- Zod types: `src/schemas/zod/\*`
 
 ### Create Endpoint
 
@@ -176,6 +176,8 @@ Check only packages for production without their dependencies(`package.json > de
 You can see License list at http://localhost:3000/licenses
 
 ### Testing
+
+Make sure api/db are running.
 
 ```zsh
 yarn test:dredd

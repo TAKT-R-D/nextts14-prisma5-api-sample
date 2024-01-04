@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "users" (
-    "userId" SERIAL NOT NULL,
+    "userId" TEXT NOT NULL,
     "userName" TEXT NOT NULL,
     "imageUrl" VARCHAR(256),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -14,7 +14,7 @@ CREATE TABLE "posts" (
     "postId" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "authorId" INTEGER NOT NULL,
+    "authorId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -25,7 +25,7 @@ CREATE TABLE "posts" (
 CREATE TABLE "bookmarks" (
     "bookmarkId" SERIAL NOT NULL,
     "postId" INTEGER,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "bookmarks_pkey" PRIMARY KEY ("bookmarkId")

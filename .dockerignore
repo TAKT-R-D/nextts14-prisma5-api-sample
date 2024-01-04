@@ -2,6 +2,9 @@
 node_modules/
 .scaffdog/
 pgdata/
+deliverables/
+tests/
+tools/
 
 **/.DS_STORE/
 **/*.sample

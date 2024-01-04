@@ -79,14 +79,14 @@ generator zod {
 // via. https://github.com/keonik/prisma-erd-generator
 generator erd {
   provider     = "prisma-erd-generator"
-  output       = "./exports/ER-Diagram.svg"
+  output       = "../deliverables/ER-Diagram.svg"
   disableEmoji = true
 }
 
 // via. https://github.com/notiz-dev/prisma-dbml-generator
 generator dbml {
   provider              = "prisma-dbml-generator"
-  output                = "./exports"
+  output                = "../deliverables"
   outputName            = "schema.dbml"
   projectName           = "Sample Project"
   projectDatabaseType   = "PostgreSQL"

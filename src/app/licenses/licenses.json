@@ -1,17 +1,17 @@
 {
-  "@asteasolutions/zod-to-openapi@6.3.0": {
+  "@asteasolutions/zod-to-openapi@6.3.1": {
     "licenses": "MIT",
     "repository": "https://github.com/asteasolutions/zod-to-openapi",
     "licenseFile": "node_modules/@asteasolutions/zod-to-openapi/LICENSE",
     "publisher": "Astea Solutions"
   },
-  "@prisma/client@5.7.0": {
+  "@prisma/client@5.7.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/prisma/prisma",
     "licenseFile": "node_modules/@prisma/client/LICENSE",
     "publisher": "Tim Suchanek"
   },
-  "jose@5.1.3": {
+  "jose@5.2.0": {
     "licenses": "MIT",
     "repository": "https://github.com/panva/jose",
     "licenseFile": "node_modules/jose/LICENSE.md",
