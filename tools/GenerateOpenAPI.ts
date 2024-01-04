@@ -1,19 +1,24 @@
+import fs from 'fs';
+import path from 'path';
+import { z } from 'zod';
 import {
   OpenAPIRegistry,
   OpenApiGeneratorV3,
   extendZodWithOpenApi,
 } from '@asteasolutions/zod-to-openapi';
-import { z } from 'zod';
+import { Ex } from '@/schemas/config/Commons';
 import {
   DocumentConfig,
   SecurityComponent,
+  XApiVersionHeaderComponent,
   XTotalCountHeaderComponent,
-} from './config/Commons';
-import fs from 'fs';
-import { entries } from './EntryPoints';
-import { Ex } from './config/Commons';
+} from './openapi/Configs';
+import { entries } from './openapi/EntryPoints';
 
 const main = async () => {
+  require('dotenv').config({
+    path: path.resolve(__dirname, '../.env'),
+  });
   const registry = new OpenAPIRegistry();
   extendZodWithOpenApi(z);
 
@@ -25,7 +30,12 @@ const main = async () => {
   );
 
   // headers
-  const headers = registry.registerComponent(
+  const headerVersion = registry.registerComponent(
+    XApiVersionHeaderComponent.type,
+    XApiVersionHeaderComponent.name,
+    XApiVersionHeaderComponent.component
+  );
+  const headerCount = registry.registerComponent(
     XTotalCountHeaderComponent.type,
     XTotalCountHeaderComponent.name,
     XTotalCountHeaderComponent.component
@@ -68,9 +78,18 @@ const main = async () => {
         }),
       };
     }
-    if (entry.isMultiLines === true) {
-      path.responses[200].headers = { 'x-total-count': headers.ref };
-    }
+    Object.keys(path.responses).forEach((key) => {
+      if (key === '200' && entry.isMultiLines === true) {
+        path.responses[key].headers = {
+          'x-api-version': headerVersion.ref,
+          'x-total-count': headerCount.ref,
+        };
+      } else {
+        path.responses[key].headers = {
+          'x-api-version': headerVersion.ref,
+        };
+      }
+    });
 
     registry.registerPath(path);
   });
@@ -79,6 +98,9 @@ const main = async () => {
 
   let obj: any = generator.generateDocument(DocumentConfig);
 
+  if (process.env.API_VERSION) {
+    obj.info.version = process.env.API_VERSION;
+  }
   // MEMO: manually add example on slugId schema. reconsider when zod-to-openapi support 3.0.0
   if (obj.components?.parameters && obj.components?.schemas) {
     if (obj.components.parameters.IntId && obj.components.schemas.IntId) {
@@ -92,7 +114,7 @@ const main = async () => {
   }
 
   const json = JSON.stringify(obj, null, 2);
-  const file = __dirname + '/../../public/openapi.json';
+  const file = __dirname + '/../public/openapi.json';
   fs.writeFileSync(file, json);
 };
 

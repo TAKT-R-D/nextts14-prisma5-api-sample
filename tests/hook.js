@@ -9,6 +9,8 @@ const includePathes = [
   `/api/users/${baseUid}`,
   '/api/posts',
   `/api/posts/${baseId}`,
+  //'/api/bookmarks',
+  //`/api/bookmarks/${baseId}`,
 ];
 
 hooks.after(
@@ -19,7 +21,7 @@ hooks.after(
 );
 
 hooks.beforeEach((transaction) => {
-  //console.log(transaction);
+  //console.log(transaction.name);
   // skip health check
   if (
     transaction.fullPath === '/api/health' ||
@@ -120,10 +122,6 @@ hooks.before(
         baseId,
         stash['postId']
       );
-      transaction.request.body = JSON.stringify({
-        title: 'updated title',
-        content: 'updated content',
-      });
     } else {
       transaction.skip = true;
     }
@@ -140,3 +138,44 @@ hooks.before('/posts/{id} > delete a post > 204', function (transaction) {
     transaction.skip = true;
   }
 });
+
+/**
+ * test senario for /api/bookmarks
+ */
+/*
+hooks.after(
+  '/bookmarks > create a bookmark > 200 > application/json; charset=utf-8',
+  function (transaction) {
+    stash['bookmarkId'] = JSON.parse(transaction.real.body)['id'];
+    console.log(stash['bookmarkId']);
+  }
+);
+
+hooks.before(
+  '/bookmarks/{id} > update a bookmark > 200 > application/json; charset=utf-8',
+  function (transaction) {
+    if (stash['bookmarkId'] !== undefined) {
+      transaction.fullPath = transaction.fullPath.replace(
+        baseId,
+        stash['bookmarkId']
+      );
+    } else {
+      transaction.skip = true;
+    }
+  }
+);
+
+hooks.before(
+  '/bookmarks/{id} > delete a bookmark > 204',
+  function (transaction) {
+    if (stash['bookmarkId'] !== undefined) {
+      transaction.fullPath = transaction.fullPath.replace(
+        baseId,
+        stash['bookmarkId']
+      );
+    } else {
+      transaction.skip = true;
+    }
+  }
+);
+*/

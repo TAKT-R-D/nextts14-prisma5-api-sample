@@ -9,7 +9,7 @@
     "start:standalone": "next build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public && node .next/standalone/server.js",
     "lint": "next lint",
     "scaffold": "scaffdog generate",
-    "openapi:generate": "ts-node -r tsconfig-paths/register src/schemas/GenerateOpenAPI.ts",
+    "openapi:generate": "ts-node -r tsconfig-paths/register tools/GenerateOpenAPI.ts",
     "license:generate": "ts-node tools/LicenseChecker.ts",
     "test:dredd": "./tests/dredd.sh"
   },
@@ -33,6 +33,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/swagger-ui-react": "^4.18.3",
+    "dotenv": "^16.3.1",
     "dredd": "^14.1.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",

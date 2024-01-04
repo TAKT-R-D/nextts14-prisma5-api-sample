@@ -30,6 +30,9 @@ export async function middleware(request: Request) {
   newHeaders.set('X-FRAME-OPTIONS', 'DENY');
   newHeaders.set('Cache-Control', 'no-cache, no-store, max-age=0');
 
+  // API VERSION
+  newHeaders.set('X-API-VERSION', process.env.API_VERSION!);
+
   // Bearer Auth
   // MEMO: except /api/auth/*
   const regexAuth = new RegExp('/api/(auth|health)/*');

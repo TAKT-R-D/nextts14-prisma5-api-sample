@@ -1,6 +1,5 @@
-// prettire-ignore
-import * as schm from './config';
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
+import * as schm from '@/schemas/config';
 
 type EntryType = {
   schema: RouteConfig;

@@ -27,65 +27,6 @@ export const Ex = {
   },
 };
 
-export const DocumentConfig = {
-  openapi: '3.0.0',
-  info: {
-    title: 'API sample',
-    version: '1.0.0',
-    description: 'This is a sample API.',
-    contact: { email: 'admin@example.com' },
-    license: {
-      name: 'MIT',
-      url: 'https://example.com/license',
-    },
-  },
-  servers: [
-    {
-      url: 'http://localhost:3000/api',
-      description: 'develop',
-    },
-    {
-      url: 'https://example.com/api',
-      description: 'production',
-    },
-  ],
-  tags: [
-    { name: 'auth', description: 'Authorization API' },
-    { name: 'user', description: 'User API' },
-    //{ name: 'cms', description: 'CMS API' },
-  ],
-};
-
-export const SecurityComponent: {
-  type: any; // ComponentTypeKey
-  name: string;
-  component: any; // SecuritySchemeType
-} = {
-  type: 'securitySchemes',
-  name: 'bearerAuth',
-  component: {
-    type: 'http',
-    scheme: 'bearer',
-    bearerFormat: 'JWT',
-  },
-};
-
-export const XTotalCountHeaderComponent: {
-  type: any; // ComponentTypeKey
-  name: string;
-  component: any;
-} = {
-  type: 'headers',
-  name: 'x-total-count',
-  component: {
-    description: 'Total number of items in the collection.',
-    schema: {
-      type: 'integer',
-      example: 123,
-    },
-  },
-};
-
 export const CommonQuery: AnyZodObject = z.object({
   page: z.number().int().optional().describe('page number').openapi(Ex.number),
   limit: z.number().int().optional().default(100).describe('limit to take'),
