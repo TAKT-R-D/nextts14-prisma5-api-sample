@@ -2,7 +2,7 @@
 
 ## Summary
 
-RESTful API Sample by `Next.js ver.14 (TypeScript)`, `PostgreSQL ver.12` and `Prism ver.5`.
+RESTful API Sample by `Next.js ver.14 (TypeScript)`, `PostgreSQL ver.16` and `Prism ver.5`.
 Main features:
 
 - Bearer authentication
@@ -189,3 +189,30 @@ If you want to test POST, PUT and DELETE methods, edit `tests/hook.js`.
 ## For your security
 
 Do not deploy or open access `/docs` and `/openapi.json` on your production, if your api is private.
+
+## Custom Commands
+
+- `yarn start:standalone`: Start `standalone` build application on local.
+- `yarn scaffold`: Generate new endpoints
+- `yarn openapi:generate`: Generate openapi.json
+- `yarn license:generate`: Generate License list
+- `yarn test:dredd`: Test APIs
+- `yarn prisma db seed`: Seed data to Database
+
+## Run with Docker
+
+- `docker-compose.yml`: APP + DB for local
+- `docker-compose.db.yml`: DB for local
+- `docker-compose.app.yml`: APP for local/production
+- `docker-compose.app-arm64.yml`: APP for production, build by ARM64 machine and depoy to AMD64 platform such as AWS
+
+APP containers support `OpenSSL 3.0`.
+
+## Notes
+
+Access Control, such as `Basic Authentication`, `Allowed Origin`, `Allowed IP` etc., is recommended to configure on your server, not on your application. `https` schema as well.
+
+Authentication secret keys in `.env` is not secure. Use some Secrets Manager.
+
+If you need a database design as one of deliverables, try to generate it by for example `tbls`.
+You can see sample database design [here](./deliverables/dbdoc/README.md).

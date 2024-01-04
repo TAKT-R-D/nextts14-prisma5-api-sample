@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getBearerAuthStatusCode } from './lib/BearerAuth';
 import { ERROR_MAP } from './lib/ErrorMessages';
 
+/*
 const allowedOrigins =
   process.env.NODE_ENV === 'production'
     ? [
@@ -10,19 +11,23 @@ const allowedOrigins =
         'http://localhost:3000',
       ]
     : ['http://localhost:3000', 'https://www.google.com'];
+*/
 
 export async function middleware(request: Request) {
+  // CORS, headers
+  /*
   const origin = request.headers.get('origin');
 
-  // CORS, headers
   if ((origin && !allowedOrigins.includes(origin)) || !origin) {
     return NextResponse.json({ error: ERROR_MAP[400] }, { status: 400 });
     // MEMO: Next.js automatically returns 204 for OPTIONS requests if no error
   }
+  */
 
   const newHeaders = new Headers(request.headers);
   // MEMO: Browsers check headers even after pre-flight requests passed
-  newHeaders.set('Access-Control-Allow-Origin', origin);
+  //newHeaders.set('Access-Control-Allow-Origin', origin);
+  newHeaders.set('Access-Control-Allow-Origin', '*');
   newHeaders.set(
     'Access-Control-Allow-Headers',
     'GET, POST, OPTIONS, DELETE, PUT'
