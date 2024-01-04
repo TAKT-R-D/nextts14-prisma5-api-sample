@@ -383,7 +383,7 @@ export * from './models/{{ inputs.module | pascal }}Schema';
 
 ```
 
-# `src/schemas/EntryPoints.ts`
+# `tools/openapi/EntryPoints.ts`
 
 ```ts
 {{- body := read output.abs | before -1 -}}

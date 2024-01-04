@@ -97,19 +97,21 @@ Module name must be same as model name in schema.prisma with lower and kebab cas
 ex. user
 
 ```
-src
-├── app/api
-│   └── users
-│       ├── [id]
-│       │   └── route.ts
-│       └── route.ts
-└── schemas
-    ├── config
-    │   ├── models
-    │   │   └── UserSchema.ts
-    │   ├── ExtendedModels.ts
-    │   └── index.ts
-    └── EntryPoints.ts
+.
+├── src
+│   ├── app/api
+│   │   └── users
+│   │       ├── [id]
+│   │       │   └── route.ts
+│   │       └── route.ts
+│   └── schemas
+│       └── config
+│           ├── models
+│           │   └── UserSchema.ts
+│           ├── ExtendedModels.ts
+│           └── index.ts
+└── tools/openapi
+    └── EntryPoinst.ts
 ```
 
 ### Edit src/schemas/ExtendedModels.ts for OpenAPI document
