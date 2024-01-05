@@ -101,7 +101,7 @@ const main = async () => {
   if (process.env.API_VERSION) {
     obj.info.version = process.env.API_VERSION;
   }
-  // MEMO: manually add example on slugId schema. reconsider when zod-to-openapi support 3.0.0
+  // MEMO: manually add example on slugId schema. reconsider when dredd support 3.0.0
   if (obj.components?.parameters && obj.components?.schemas) {
     if (obj.components.parameters.IntId && obj.components.schemas.IntId) {
       obj.components.parameters.IntId.example =
