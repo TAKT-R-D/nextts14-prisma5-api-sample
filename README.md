@@ -210,6 +210,19 @@ Do not deploy or open access `/docs` and `/openapi.json` on your production, if 
 
 APP containers support `OpenSSL 3.0`.
 
+## Quick Start
+
+Creat your own API using example option.
+
+```zsh
+yarn create next-app --example https://github.com/TAKT-R-D/nextts14-prisma5-api-sample/tree/template my-app
+cd my-app
+cp .env.example .env
+docker compose -f docker-compose.db.yml up -d
+npx prisma migrate dev
+yarn dev # or yarn start:standalone
+```
+
 ## Notes
 
 Access Control, such as `Basic Authentication`, `Allowed Origin`, `Allowed IP` etc., is recommended to configure on your server, not on your application. `https` schema as well.
