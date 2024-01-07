@@ -7,10 +7,6 @@ const includePathes = [
   '/api/auth/access_token',
   '/api/users',
   `/api/users/${baseUid}`,
-  '/api/posts',
-  `/api/posts/${baseId}`,
-  //'/api/bookmarks',
-  //`/api/bookmarks/${baseId}`,
 ];
 
 hooks.after(
@@ -103,79 +99,3 @@ hooks.before('/users/{id} > delete an user > 204', function (transaction) {
     transaction.skip = true;
   }
 });
-
-/**
- * test senario for /api/posts
- */
-hooks.after(
-  '/posts > create a post > 200 > application/json; charset=utf-8',
-  function (transaction) {
-    stash['postId'] = JSON.parse(transaction.real.body)['id'];
-  }
-);
-
-hooks.before(
-  '/posts/{id} > update a post > 200 > application/json; charset=utf-8',
-  function (transaction) {
-    if (stash['postId'] !== undefined) {
-      transaction.fullPath = transaction.fullPath.replace(
-        baseId,
-        stash['postId']
-      );
-    } else {
-      transaction.skip = true;
-    }
-  }
-);
-
-hooks.before('/posts/{id} > delete a post > 204', function (transaction) {
-  if (stash['postId'] !== undefined) {
-    transaction.fullPath = transaction.fullPath.replace(
-      baseId,
-      stash['postId']
-    );
-  } else {
-    transaction.skip = true;
-  }
-});
-
-/**
- * test senario for /api/bookmarks
- */
-/*
-hooks.after(
-  '/bookmarks > create a bookmark > 200 > application/json; charset=utf-8',
-  function (transaction) {
-    stash['bookmarkId'] = JSON.parse(transaction.real.body)['id'];
-    console.log(stash['bookmarkId']);
-  }
-);
-
-hooks.before(
-  '/bookmarks/{id} > update a bookmark > 200 > application/json; charset=utf-8',
-  function (transaction) {
-    if (stash['bookmarkId'] !== undefined) {
-      transaction.fullPath = transaction.fullPath.replace(
-        baseId,
-        stash['bookmarkId']
-      );
-    } else {
-      transaction.skip = true;
-    }
-  }
-);
-
-hooks.before(
-  '/bookmarks/{id} > delete a bookmark > 204',
-  function (transaction) {
-    if (stash['bookmarkId'] !== undefined) {
-      transaction.fullPath = transaction.fullPath.replace(
-        baseId,
-        stash['bookmarkId']
-      );
-    } else {
-      transaction.skip = true;
-    }
-  }
-);
-*/

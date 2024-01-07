@@ -6,7 +6,7 @@ import { handlePrismaError } from '@/lib/PrismaErrorHandler';
 // health check with database connection
 export async function GET(request: Request) {
   let statusCode = 200;
-  const res = await prisma.bookmark
+  const res = await prisma.user
     .findMany({ take: 1 })
     .then(() => {
       return {

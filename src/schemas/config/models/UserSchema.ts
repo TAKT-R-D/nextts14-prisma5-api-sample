@@ -1,12 +1,7 @@
 import { z } from 'zod';
 import * as builder from '@/schemas/BuildOpenApiSchema';
 import { type User as RequestType } from '@/schemas/zod';
-import {
-  Ex,
-  UserModelSchema as ModelSchema,
-  BookmarkModelSchema,
-  PostModelSchema,
-} from '@/schemas/config';
+import { Ex, UserModelSchema as ModelSchema } from '@/schemas/config';
 
 /**
  * PRISMA CONFIGS
@@ -17,40 +12,7 @@ import {
 
 export const UserPrismaSelect = {};
 
-export const UserPrismaInclude = {
-  posts: {
-    orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
-    select: {
-      id: true,
-      title: true,
-      createdAt: true,
-    },
-  },
-  bookmarks: {
-    select: {
-      postId: true,
-      post: {
-        select: {
-          title: true,
-          createdAt: true,
-          author: {
-            select: {
-              id: true,
-              userName: true,
-              imageUrl: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  _count: {
-    select: {
-      posts: true,
-      bookmarks: true,
-    },
-  },
-};
+export const UserPrismaInclude = {};
 
 export function formatUserParams(params: Partial<RequestType>) {
   return params;
@@ -75,32 +37,8 @@ const _requestPutSchema = _requestPostSchema.extend({
   imageUrl: _requestPostSchema.shape.imageUrl.optional(),
 });
 
-const _responseSchema = ModelSchema.merge(
-  z.object({
-    posts: z.array(
-      PostModelSchema.pick({ id: true, title: true, createdAt: true })
-    ),
-    bookmarks: z.array(
-      BookmarkModelSchema.pick({ postId: true }).merge(
-        z.object({
-          post: PostModelSchema.pick({ title: true, createdAt: true }).merge(
-            z.object({
-              author: ModelSchema.pick({
-                id: true,
-                userName: true,
-                imageUrl: true,
-              }),
-            })
-          ),
-        })
-      )
-    ),
-    _count: z.object({
-      posts: z.number().int().openapi(Ex.number),
-      bookmarks: z.number().int().openapi(Ex.number),
-    }),
-  })
-);
+const _responseSchema = ModelSchema;
+//const _responseSchema = ModelSchema.merge({...});
 
 /**
  * OPENAPI PATH CONFIG
